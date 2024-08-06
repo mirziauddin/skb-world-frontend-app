@@ -57,6 +57,12 @@ const gridData = [
     author: "Author 9",
     price: "$50",
   },
+  {
+    name: "Item 10",
+    description: "Description for Item 9",
+    author: "Author 10",
+    price: "$50",
+  },
 ];
 
 const AllCourses: React.FC = () => {

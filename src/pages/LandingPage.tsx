@@ -24,7 +24,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     <div className="scroll-smooth">
       <div
         ref={homeRef}
-        className="flex items-center justify-center w-full min-h-screen bg-white text-yellow-500 text-2xl md:text-4xl lg:text-5xl p-4"
+        className="flex items-center justify-center w-full min-h-screen p-4"
       >
         <Home />
       </div>

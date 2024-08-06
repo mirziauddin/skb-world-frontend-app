@@ -1,8 +1,8 @@
 import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCloseFullscreen } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import skbcompany from "../../assets/skbcompany.png";
-import { Link } from "react-router-dom";
 import clsx from "clsx";
 
 type NavbarProps = {
@@ -21,6 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({
   contactRef,
 }) => {
   const [isSideMenuOpen, setMenu] = React.useState(false);
+  const navigate = useNavigate(); // Hook for navigation
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
@@ -48,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <img
               src={skbcompany}
               alt="Our Work"
-              className="w-full h-auto max-w-xs md:max-w-md"
+              className="w-full h-full max-w-60 md:max-w-60"
             />
           </section>
         </div>
@@ -91,7 +92,10 @@ const Navbar: React.FC<NavbarProps> = ({
               {data.label}
             </button>
           ))}
-          <button className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700">
+          <button
+            className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700"
+            onClick={() => navigate("/login")} // Handle navigation to login page
+          >
             Login
           </button>
         </section>
