@@ -46,9 +46,9 @@ const footerSections = [
     ],
   },
   {
-    title: "Careers",
+    title: "Terms & Conditions",
     links: [
-      { name: "Blog", url: "#" },
+      { name: "Privacy & Policy", url: "#" },
       { name: "Help and Support", url: "#" },
       { name: "Affiliate", url: "#" },
       { name: "Investors", url: "#" },
@@ -63,11 +63,11 @@ const footerSections = [
     ],
   },
   {
-    title: "Udemy Business",
+    title: "Company",
     links: [
-      { name: "Teach on Udemy", url: "#" },
-      { name: "Get the app", url: "#" },
-      { name: "About us", url: "#" },
+      { name: "About", url: "#" },
+      { name: "Service", url: "#" },
+      { name: "Contact", url: "#" },
       { name: "Contact us", url: "#" },
     ],
   },

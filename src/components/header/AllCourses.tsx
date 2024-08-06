@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import GridContainer from "./GridContainer";
 import homeLogo from "../../assets/homelogo.svg";
+import Pagination from "./Pagination";
 
 const gridData = [
   {
@@ -63,9 +64,45 @@ const gridData = [
     author: "Author 10",
     price: "$50",
   },
+  {
+    name: "Item 7",
+    description: "Description for Item 7",
+    author: "Author 7",
+    price: "$40",
+  },
+  {
+    name: "Item 8",
+    description: "Description for Item 8",
+    author: "Author 8",
+    price: "$45",
+  },
+  {
+    name: "Item 9",
+    description: "Description for Item 9",
+    author: "Author 9",
+    price: "$50",
+  },
+  {
+    name: "Item 10",
+    description: "Description for Item 9",
+    author: "Author 10",
+    price: "$50",
+  },
 ];
 
 const AllCourses: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 10;
+
+  // Calculate the courses to be displayed on the current page
+  const indexOfLastCourse = currentPage * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = gridData.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="w-full min-h-screen bg-white p-4 md:p-6 lg:p-8">
       <div className="text-center mb-8">
@@ -80,11 +117,17 @@ const AllCourses: React.FC = () => {
       </div>
       <div className="overflow-x-auto">
         <GridContainer
-          gridData={gridData}
+          gridData={currentCourses}
           logo={homeLogo}
           buttonText="Purchase"
         />
       </div>
+      <Pagination
+        totalCourses={gridData.length}
+        coursesPerPage={coursesPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

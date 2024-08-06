@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        roboto: ['"Roboto"', "sans-serif"],
+      },
       keyframes: {
         bounce: {
           "0%, 100%": { transform: "translateY(-10%)" },
@@ -15,7 +18,7 @@ export default {
         blinkCaret: {
           from: { borderColor: "transparent" },
           to: { borderColor: "transparent" },
-          "50%": { borderColor: "#00c853" }, // Tailwind green-400 color
+          "50%": { borderColor: "#00c853" },
         },
         fadeIn: {
           from: { opacity: 0 },
@@ -26,6 +29,10 @@ export default {
           "50%": { opacity: 1 },
           "100%": { opacity: 0 },
         },
+        scaleUp: {
+          "0%": { transform: "scale(0.8)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
       animation: {
         bounce: "bounce 4s infinite",
@@ -33,6 +40,7 @@ export default {
           "typing 2s steps(30, end) forwards, blinkCaret 0.75s step-end infinite",
         fadeIn: "fadeIn 0.5s forwards",
         fadeInOut: "fadeInOut 2s infinite",
+        scaleUp: "scaleUp 1s ease-in-out",
       },
     },
   },

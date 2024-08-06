@@ -10,19 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.0.14",
     "@react-oauth/google": "^0.12.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/yup": "^0.32.0",
     "clsx": "^2.1.1",
+    "formik": "^2.4.6",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-google-login": "^5.2.2",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.26.0",
     "react-toastify": "^10.0.5",
     "sort-by": "^1.2.0",
-    "tailwind-scrollbar": "^3.1.0"
+    "tailwind-scrollbar": "^3.1.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

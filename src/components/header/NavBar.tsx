@@ -1,7 +1,8 @@
 import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCloseFullscreen } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { AiOutlineSearch } from "react-icons/ai";
+import { useNavigate, useLocation } from "react-router-dom";
 import skbcompany from "../../assets/skbcompany.png";
 import clsx from "clsx";
 
@@ -22,6 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isSideMenuOpen, setMenu] = React.useState(false);
   const navigate = useNavigate(); // Hook for navigation
+  const location = useLocation(); // Hook for getting the current location
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
@@ -30,16 +32,29 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   const navlinks = [
-    { label: "Home", ref: homeRef },
-    { label: "All Courses", ref: allCoursesRef },
-    { label: "Services", ref: servicesRef },
-    { label: "About", ref: aboutRef },
-    { label: "Contact", ref: contactRef },
+    { label: "Home", ref: homeRef, path: "/" },
+    { label: "All Courses", ref: allCoursesRef, path: "/" },
+    { label: "Services", ref: servicesRef, path: "/" },
+    { label: "About", ref: aboutRef, path: "/" },
+    { label: "Contact", ref: contactRef, path: "/" },
   ];
+
+  const handleNavigation = (
+    path: string,
+    ref: React.RefObject<HTMLDivElement>
+  ) => {
+    if (location.pathname === path) {
+      scrollToRef(ref);
+    } else {
+      navigate(path);
+      setTimeout(() => scrollToRef(ref), 100); // Delay to allow navigation before scrolling
+    }
+    setMenu(false);
+  };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50 flex justify-between px-8 items-center py-4 lg:px-24">
+      <nav className="fixed top-0 left-0 w-screen bg-white shadow-md z-50 flex justify-between px-8 items-center py-4 lg:px-24">
         <div className="flex items-center gap-8">
           <section className="flex items-center gap-4">
             <GiHamburgerMenu
@@ -70,10 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={i}
                 className="font-bold text-2xl"
-                onClick={() => {
-                  scrollToRef(data.ref);
-                  setMenu(false);
-                }}
+                onClick={() => handleNavigation(data.path, data.ref)}
               >
                 {data.label}
               </button>
@@ -87,11 +99,22 @@ const Navbar: React.FC<NavbarProps> = ({
             <button
               key={i}
               className="hidden lg:block text-gray-400 pr-5 hover:text-black"
-              onClick={() => scrollToRef(data.ref)}
+              onClick={() => handleNavigation(data.path, data.ref)}
             >
               {data.label}
             </button>
           ))}
+          {/* Search Input */}
+          <div className="hidden lg:flex items-center">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="border rounded-l-full py-1 px-3"
+            />
+            <button className="bg-green-600 text-white py-1 px-2 rounded-r-full">
+              <AiOutlineSearch className="text-xl" />
+            </button>
+          </div>
           <button
             className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700"
             onClick={() => navigate("/login")} // Handle navigation to login page

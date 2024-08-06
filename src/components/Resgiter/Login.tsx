@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { FaGoogle } from "react-icons/fa";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,7 +10,6 @@ interface LoginProps {
   emailPlaceholder?: string;
   passwordPlaceholder?: string;
   buttonText?: string;
-  googleButtonText?: string;
   forgotPasswordText?: string;
   createAccountText?: string;
 }
@@ -19,43 +19,42 @@ const Login: React.FC<LoginProps> = ({
   emailPlaceholder = "Enter your email",
   passwordPlaceholder = "Enter your password",
   buttonText = "Login",
-  googleButtonText = "Sign up with Google",
   forgotPasswordText = "Forgot Password?",
   createAccountText = "Don't have an account?",
 }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      password: Yup.string().required("Required"),
+    }),
+    onSubmit: (values) => {
+      const existingAccounts = ["user@example.com"];
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+      if (existingAccounts.includes(values.email)) {
+        // Logging data to the console
+        console.log("Form data:", values);
 
-    if (email === "" || password === "") {
-      toast.error("Please fill in all fields.");
-      return;
-    }
+        // Displaying data in an alert box
+        alert(`Form data:\n${JSON.stringify(values, null, 2)}`);
 
-    // Simulate authentication
-    const existingAccounts = ["user@example.com"];
-
-    if (existingAccounts.includes(email)) {
-      toast.success("Login successful!");
-
-      // Clear input fields
-      setEmail("");
-      setPassword("");
-    } else {
-      // Clear input fields
-      setEmail("");
-      setPassword("");
-      toast.info("Please create an account first.");
-    }
-  };
+        toast.success("Login successful!");
+        formik.resetForm();
+      } else {
+        toast.info("Please create an account first.");
+        formik.resetForm();
+      }
+    },
+  });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-500 via-white-500 to-white-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">{title}</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
           <div>
             <label
               htmlFor="email"
@@ -66,12 +65,16 @@ const Login: React.FC<LoginProps> = ({
             <input
               type="email"
               id="email"
+              name="email"
               placeholder={emailPlaceholder}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div className="text-red-600">{formik.errors.email}</div>
+            ) : null}
           </div>
           <div>
             <label
@@ -83,36 +86,31 @@ const Login: React.FC<LoginProps> = ({
             <input
               type="password"
               id="password"
+              name="password"
               placeholder={passwordPlaceholder}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
             />
+            {formik.touched.password && formik.errors.password ? (
+              <div className="text-red-600">{formik.errors.password}</div>
+            ) : null}
           </div>
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
           >
             {buttonText}
           </button>
         </form>
-        <div className="mt-6 flex items-center justify-between">
-          <hr className="w-full border-gray-300" />
-          <span className="px-4 text-gray-500">or</span>
-          <hr className="w-full border-gray-300" />
-        </div>
-        <button
-          type="button"
-          className="w-full mt-6 py-2 px-4 bg-red-600 text-white font-semibold rounded-md flex items-center justify-center space-x-2 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-        >
-          <FaGoogle />
-          <span>{googleButtonText}</span>
-        </button>
         <div className="mt-6 text-center">
-          <a href="#" className="text-sm text-blue-600 hover:underline">
+          <Link
+            to="/forgotPassword"
+            className="text-sm text-blue-600 hover:underline"
+          >
             {forgotPasswordText}
-          </a>
+          </Link>
         </div>
         <div className="mt-2 text-center">
           <span className="text-sm text-gray-600">{createAccountText} </span>

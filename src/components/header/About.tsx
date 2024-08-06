@@ -11,15 +11,6 @@ const DynamicText: React.FC<DynamicTextProps> = ({ text }) => {
 };
 
 const About: React.FC = () => {
-  const aboutProps = {
-    workTitle: "Our Work",
-    workDescription:
-      "We are dedicated to delivering high-quality software solutions that meet the unique needs of our clients. Our team specializes in developing innovative applications using the latest technologies.",
-    companyTitle: "Our Company",
-    companyDescription:
-      "Our company focuses on using responsive design, React.js, Tailwind CSS, and TypeScript to create efficient and scalable web applications. We strive to stay at the forefront of technology to provide the best possible solutions to our clients.",
-  };
-
   return (
     <div className="w-full min-h-screen p-8 bg-gray-100 flex flex-col items-center justify-center">
       <div className="text-center mb-8">
@@ -68,3 +59,11 @@ const About: React.FC = () => {
 };
 
 export default About;
+const aboutProps = {
+  workTitle: "Our Work",
+  workDescription:
+    "We are dedicated to delivering high-quality software solutions that meet the unique needs of our clients. Our team specializes in developing innovative applications using the latest technologies.",
+  companyTitle: "Our Company",
+  companyDescription:
+    "Our company focuses on using responsive design, React.js, Tailwind CSS, and TypeScript to create efficient and scalable web applications. We strive to stay at the forefront of technology to provide the best possible solutions to our clients.",
+};
