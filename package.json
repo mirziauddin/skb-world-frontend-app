@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/yup": "^0.32.0",
     "aws-sdk": "^2.1669.0",
+    "axios": "^1.7.3",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",

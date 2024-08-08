@@ -5,10 +5,11 @@ import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCheck } from "react-icons/fa"; // Install react-icons
+import axios from "axios"; // Import axios for API requests
 
 interface SignupProps {
   title?: string;
-  fullNamePlaceholder?: string;
+  namePlaceholder?: string;
   emailPlaceholder?: string;
   passwordPlaceholder?: string;
   repasswordPlaceholder?: string;
@@ -18,7 +19,7 @@ interface SignupProps {
 
 const Signup: React.FC<SignupProps> = ({
   title = "Create Your Account",
-  fullNamePlaceholder = "Enter your full name",
+  namePlaceholder = "Enter your full name",
   emailPlaceholder = "Enter your email",
   passwordPlaceholder = "Enter your password",
   repasswordPlaceholder = "Re-enter your password",
@@ -28,7 +29,7 @@ const Signup: React.FC<SignupProps> = ({
   const navigate = useNavigate(); // Initialize useNavigate hook
 
   const initialValues = {
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     repassword: "",
@@ -36,7 +37,7 @@ const Signup: React.FC<SignupProps> = ({
   };
 
   const validationSchema = Yup.object({
-    fullName: Yup.string().required("Full Name is required"),
+    name: Yup.string().required("Full Name is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
@@ -50,21 +51,29 @@ const Signup: React.FC<SignupProps> = ({
     ),
   });
 
-  const handleSubmit = (
+  const handleSubmit = async (
     values: typeof initialValues,
     { resetForm }: { resetForm: () => void }
   ) => {
-    const existingAccounts = ["user@example.com"];
+    try {
+      // Call your API with axios
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/auth/signup",
+        {
+          email: values.email,
+          name: values.name,
+          password: values.password,
+        }
+      );
 
-    if (!existingAccounts.includes(values.email)) {
-      console.log("Form Data:", values); // Log form data to console
+      console.log("Response:", response.data); // Log API response to console
       toast.success("Sign up successful!");
       setTimeout(() => {
         resetForm();
         navigate("/login"); // Redirect to login page after displaying the toast
       }, 2000); // Adjust timeout as needed to ensure the toast is visible
-    } else {
-      toast.info("Account already exists. Please login.");
+    } catch (error) {
+      toast.error("Signup failed. Please try again.");
     }
   };
 
@@ -88,20 +97,20 @@ const Signup: React.FC<SignupProps> = ({
               <Form className="space-y-4">
                 <div>
                   <label
-                    htmlFor="fullName"
+                    htmlFor="name"
                     className="block text-sm font-medium text-gray-700"
                   >
                     Full Name
                   </label>
                   <Field
                     type="text"
-                    id="fullName"
-                    name="fullName"
-                    placeholder={fullNamePlaceholder}
+                    id="name"
+                    name="name"
+                    placeholder={namePlaceholder}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                   />
                   <ErrorMessage
-                    name="fullName"
+                    name="name"
                     component="div"
                     className="text-red-600 text-sm"
                   />
