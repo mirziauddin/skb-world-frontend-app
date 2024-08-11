@@ -13,6 +13,8 @@ import Login from "./components/Resgiter/Login";
 import Signup from "./components/Resgiter/Signup";
 import ForgotPassword from "./components/Resgiter/ForgotPassword";
 import ResetPassword from "./components/Resgiter/ResetPassword";
+import AdminDashboard from "./pages/AdminDashboard";
+import UserDashboard from "./pages/userDashboard";
 
 export default function App() {
   // Create references for each section
@@ -50,9 +52,11 @@ export default function App() {
         <Route path="/allcourses" element={<AllCourses />} />
         <Route path="/services" element={<Service />} />
 
-        {/* Register route */}
+        {/* Register routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
       </Routes>
