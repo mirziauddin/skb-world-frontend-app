@@ -5,6 +5,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import skbcompany from "../../assets/skbcompany.png";
 import clsx from "clsx";
+import useAuthStore from "../../middleware/header/useAuthStore";
 
 type NavbarProps = {
   homeRef: React.RefObject<HTMLDivElement>;
@@ -28,9 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({
   contactRef,
 }) => {
   const [isSideMenuOpen, setMenu] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
-  const [userRole, setUserRole] = React.useState<string>("");
-
+  const { isLoggedIn, userRole, setAuth, clearAuth } = useAuthStore(); // Use Zustand store
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,12 +37,11 @@ const Navbar: React.FC<NavbarProps> = ({
     const authData = localStorage.getItem("authData");
     if (authData) {
       const { role } = JSON.parse(authData);
-      setIsLoggedIn(true);
-      setUserRole(role);
+      setAuth(true, role);
     } else {
-      setIsLoggedIn(false);
+      setAuth(false, "");
     }
-  }, [location.pathname]);
+  }, [location.pathname, setAuth]);
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
@@ -86,8 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const handleLogout = () => {
     localStorage.removeItem("authData");
-    setIsLoggedIn(false);
-    setUserRole("");
+    clearAuth(); // Clear Zustand state
     navigate("/login");
   };
 

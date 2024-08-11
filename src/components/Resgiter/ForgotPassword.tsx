@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useForgotPasswordStore } from "../../middleware/register/ForgotPasswordStore";
 
 interface ForgotPasswordProps {
   title?: string;
@@ -15,8 +16,14 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   emailPlaceholder = "Enter your email",
   buttonText = "Forgot Password",
 }) => {
+  const { email, setEmail, resetForm } = useForgotPasswordStore();
+
+  useEffect(() => {
+    setEmail(email);
+  }, [email, setEmail]);
+
   const initialValues = {
-    email: "",
+    email,
   };
 
   const validationSchema = Yup.object({
@@ -27,11 +34,12 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
 
   const handleSubmit = (
     values: typeof initialValues,
-    { resetForm }: { resetForm: () => void }
+    { resetForm: resetFormikForm }: { resetForm: () => void }
   ) => {
     console.log("Password reset request for email:", values.email);
     alert(`Password reset email sent to: ${values.email}`);
     toast.success("Password reset email sent!");
+    resetFormikForm();
     resetForm();
   };
 
@@ -44,7 +52,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, handleChange }) => (
             <Form className="space-y-4">
               <div>
                 <label
@@ -59,6 +67,10 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
                   name="email"
                   placeholder={emailPlaceholder}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setEmail(e.target.value);
+                    handleChange(e); // Ensure Formik handles the change as well
+                  }}
                 />
                 <ErrorMessage
                   name="email"

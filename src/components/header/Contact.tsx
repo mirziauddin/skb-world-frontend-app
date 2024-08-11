@@ -1,56 +1,49 @@
 import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useContactFormStore } from "../../middleware/header/useContactFormStore";
 
 interface ContactProps {
-  initialEmail?: string;
-  initialName?: string;
-  initialSubject?: string;
-  initialMessage?: string;
   buttonText?: string;
   successMessage?: string;
 }
 
 const Contact: React.FC<ContactProps> = ({
-  initialEmail = "",
-  initialName = "",
-  initialSubject = "",
-  initialMessage = "",
   buttonText = "Send Message",
   successMessage = "Message sent successfully!",
 }) => {
-  const formik = useFormik({
-    initialValues: {
-      email: initialEmail,
-      name: initialName,
-      subject: initialSubject,
-      message: initialMessage,
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email address").required("Required"),
-      name: Yup.string().required("Required"),
-      subject: Yup.string().required("Required"),
-      message: Yup.string().required("Required"),
-    }),
-    onSubmit: (values) => {
-      console.log(values); // Log form data to console
+  const {
+    email,
+    name,
+    subject,
+    message,
+    errors,
+    touched,
+    setFieldValue,
+    setFieldTouched,
+    resetForm,
+    validateForm,
+  } = useContactFormStore();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log({ email, name, subject, message }); // Log form data to console
       toast.success(successMessage); // Show success toast message
       alert(
-        `User Input Data:\n\nEmail: ${values.email}\nName: ${values.name}\nSubject: ${values.subject}\nMessage: ${values.message}`
+        `User Input Data:\n\nEmail: ${email}\nName: ${name}\nSubject: ${subject}\nMessage: ${message}`
       ); // Alert user input data
 
       // Clear form fields after submission
-      formik.resetForm();
-    },
-  });
+      resetForm();
+    }
+  };
 
   return (
     <div className="w-full min-h-screen bg-white p-4 md:p-6 lg:p-8 flex justify-center items-center">
       <form
         className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg"
-        onSubmit={formik.handleSubmit}
+        onSubmit={handleSubmit}
       >
         <h2
           className="text-2xl font-bold mb-4 text-black"
@@ -72,13 +65,13 @@ const Contact: React.FC<ContactProps> = ({
             name="email"
             className="w-full p-2 border rounded text-sm text-black"
             placeholder="Enter your email address"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            value={email}
+            onChange={(e) => setFieldValue("email", e.target.value)}
+            onBlur={() => setFieldTouched("email", true)}
             required
           />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-red-500 text-xs">{formik.errors.email}</div>
+          {touched.email && errors.email ? (
+            <div className="text-red-500 text-xs">{errors.email}</div>
           ) : null}
         </div>
         <div className="mb-4">
@@ -95,13 +88,13 @@ const Contact: React.FC<ContactProps> = ({
             name="name"
             className="w-full p-2 border rounded text-sm text-black"
             placeholder="Enter your name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            value={name}
+            onChange={(e) => setFieldValue("name", e.target.value)}
+            onBlur={() => setFieldTouched("name", true)}
             required
           />
-          {formik.touched.name && formik.errors.name ? (
-            <div className="text-red-500 text-xs">{formik.errors.name}</div>
+          {touched.name && errors.name ? (
+            <div className="text-red-500 text-xs">{errors.name}</div>
           ) : null}
         </div>
         <div className="mb-4">
@@ -118,13 +111,13 @@ const Contact: React.FC<ContactProps> = ({
             name="subject"
             className="w-full p-2 border rounded text-sm text-black"
             placeholder="Enter subject"
-            value={formik.values.subject}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            value={subject}
+            onChange={(e) => setFieldValue("subject", e.target.value)}
+            onBlur={() => setFieldTouched("subject", true)}
             required
           />
-          {formik.touched.subject && formik.errors.subject ? (
-            <div className="text-red-500 text-xs">{formik.errors.subject}</div>
+          {touched.subject && errors.subject ? (
+            <div className="text-red-500 text-xs">{errors.subject}</div>
           ) : null}
         </div>
         <div className="mb-4">
@@ -140,13 +133,13 @@ const Contact: React.FC<ContactProps> = ({
             name="message"
             className="w-full p-2 border rounded text-sm text-black"
             placeholder="Enter your message"
-            value={formik.values.message}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            value={message}
+            onChange={(e) => setFieldValue("message", e.target.value)}
+            onBlur={() => setFieldTouched("message", true)}
             required
           />
-          {formik.touched.message && formik.errors.message ? (
-            <div className="text-red-500 text-xs">{formik.errors.message}</div>
+          {touched.message && errors.message ? (
+            <div className="text-red-500 text-xs">{errors.message}</div>
           ) : null}
         </div>
         <p className="text-xs mb-4 text-gray-600">

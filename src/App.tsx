@@ -8,13 +8,13 @@ import Contact from "./components/header/Contact";
 import Home from "./components/header/Home";
 import AllCourses from "./components/header/AllCourses";
 import Service from "./components/header/Service";
-import { Footer, footerSections } from "./components/header/Footer";
 import Login from "./components/Resgiter/Login";
 import Signup from "./components/Resgiter/Signup";
-import ForgotPassword from "./components/Resgiter/ForgotPassword";
+import { Footer, footerSections } from "./components/header/Footer";
 import ResetPassword from "./components/Resgiter/ResetPassword";
-import AdminDashboard from "./pages/AdminDashboard";
+import ForgotPassword from "./components/Resgiter/ForgotPassword";
 import UserDashboard from "./pages/userDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 export default function App() {
   // Create references for each section
@@ -51,8 +51,6 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/allcourses" element={<AllCourses />} />
         <Route path="/services" element={<Service />} />
-
-        {/* Register routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />

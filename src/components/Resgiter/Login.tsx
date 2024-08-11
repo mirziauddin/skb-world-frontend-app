@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuthStore } from "../../middleware/register/useAuthStore";
 
 interface LoginProps {
   title?: string;
@@ -14,7 +15,6 @@ interface LoginProps {
   forgotPasswordText?: string;
   createAccountText?: string;
 }
-
 const Login: React.FC<LoginProps> = ({
   title = "Login to Your Account",
   emailPlaceholder = "Enter your email",
@@ -24,6 +24,7 @@ const Login: React.FC<LoginProps> = ({
   createAccountText = "Don't have an account?",
 }) => {
   const navigate = useNavigate();
+  const { setRole } = useAuthStore();
 
   const formik = useFormik({
     initialValues: {
@@ -42,8 +43,8 @@ const Login: React.FC<LoginProps> = ({
         );
         const { role } = response.data;
 
-        // Store the role and other data in local storage
-        localStorage.setItem("authData", JSON.stringify({ role }));
+        // Store the role using Zustand
+        setRole(role);
 
         // Show the success toast notification
         toast.success("Login successful!", {
@@ -122,10 +123,10 @@ const Login: React.FC<LoginProps> = ({
           </button>
         </form>
         <div className="mt-4 flex justify-between text-sm text-gray-600">
-          <Link to="/forgot-password" className="hover:underline">
+          <Link to="/forgotPassword" className="hover:underline">
             {forgotPasswordText}
           </Link>
-          <Link to="/register" className="hover:underline">
+          <Link to="/signup" className="hover:underline">
             {createAccountText}
           </Link>
         </div>

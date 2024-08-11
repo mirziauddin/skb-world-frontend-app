@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import skbcompany from "../../assets/skbcompany2.png";
 import AnimatedText from "./AnimatedText";
+import useHomeStore from "../../middleware/header/useHomeStore";
 
 const Home = () => {
-  const [animate, setAnimate] = useState(false);
+  const { animate, setAnimate } = useHomeStore(); // Use Zustand store
 
   useEffect(() => {
     setAnimate(true);
-  }, []);
+  }, [setAnimate]);
 
   return (
     <>

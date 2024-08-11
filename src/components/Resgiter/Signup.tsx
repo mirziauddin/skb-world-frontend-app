@@ -4,8 +4,9 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaCheck } from "react-icons/fa"; // Install react-icons
-import axios from "axios"; // Import axios for API requests
+import { FaCheck } from "react-icons/fa";
+import axios from "axios";
+import { useSignupStore } from "../../middleware/register/useSignupStore";
 
 interface SignupProps {
   title?: string;
@@ -26,14 +27,27 @@ const Signup: React.FC<SignupProps> = ({
   buttonText = "Sign Up",
   acceptConditionsText = "I accept the terms and conditions",
 }) => {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
+  const {
+    name,
+    email,
+    password,
+    repassword,
+    acceptConditions,
+    setName,
+    setEmail,
+    setPassword,
+    setRepassword,
+    setAcceptConditions,
+    resetForm,
+  } = useSignupStore();
 
   const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-    repassword: "",
-    acceptConditions: false,
+    name,
+    email,
+    password,
+    repassword,
+    acceptConditions,
   };
 
   const validationSchema = Yup.object({
@@ -53,10 +67,9 @@ const Signup: React.FC<SignupProps> = ({
 
   const handleSubmit = async (
     values: typeof initialValues,
-    { resetForm }: { resetForm: () => void }
+    { resetForm: resetFormikForm }: { resetForm: () => void }
   ) => {
     try {
-      // Call your API with axios
       const response = await axios.post(
         "http://localhost:8080/api/v1/auth/signup",
         {
@@ -66,12 +79,12 @@ const Signup: React.FC<SignupProps> = ({
         }
       );
 
-      console.log("Response:", response.data); // Log API response to console
       toast.success("Sign up successful!");
       setTimeout(() => {
-        resetForm();
-        navigate("/login"); // Redirect to login page after displaying the toast
-      }, 2000); // Adjust timeout as needed to ensure the toast is visible
+        resetFormikForm();
+        resetForm(); // Reset Zustand store
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       toast.error("Signup failed. Please try again.");
     }
@@ -86,7 +99,7 @@ const Signup: React.FC<SignupProps> = ({
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting, values }) => {
+          {({ isSubmitting, values, handleChange, handleBlur }) => {
             const password = values.password;
             const minLengthValid = password.length >= 8;
             const letterValid = /[A-Za-z]/.test(password);
@@ -108,6 +121,11 @@ const Signup: React.FC<SignupProps> = ({
                     name="name"
                     placeholder={namePlaceholder}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setName(e.target.value);
+                    }}
+                    onBlur={handleBlur}
                   />
                   <ErrorMessage
                     name="name"
@@ -128,6 +146,11 @@ const Signup: React.FC<SignupProps> = ({
                     name="email"
                     placeholder={emailPlaceholder}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setEmail(e.target.value);
+                    }}
+                    onBlur={handleBlur}
                   />
                   <ErrorMessage
                     name="email"
@@ -148,6 +171,11 @@ const Signup: React.FC<SignupProps> = ({
                     name="password"
                     placeholder={passwordPlaceholder}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setPassword(e.target.value);
+                    }}
+                    onBlur={handleBlur}
                   />
                   <ErrorMessage
                     name="password"
@@ -194,6 +222,11 @@ const Signup: React.FC<SignupProps> = ({
                     name="repassword"
                     placeholder={repasswordPlaceholder}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setRepassword(e.target.value);
+                    }}
+                    onBlur={handleBlur}
                   />
                   <ErrorMessage
                     name="repassword"
@@ -206,20 +239,29 @@ const Signup: React.FC<SignupProps> = ({
                     type="checkbox"
                     id="acceptConditions"
                     name="acceptConditions"
-                    className="mr-2"
+                    className="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                    checked={values.acceptConditions}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setAcceptConditions(e.target.checked);
+                    }}
+                    onBlur={handleBlur}
                   />
-                  <label htmlFor="acceptConditions" className="text-sm">
+                  <label
+                    htmlFor="acceptConditions"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
                     {acceptConditionsText}
                   </label>
-                  <ErrorMessage
-                    name="acceptConditions"
-                    component="div"
-                    className="text-red-600 text-sm"
-                  />
                 </div>
+                <ErrorMessage
+                  name="acceptConditions"
+                  component="div"
+                  className="text-red-600 text-sm"
+                />
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                  className="w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                   disabled={isSubmitting || !allValid}
                 >
                   {buttonText}
@@ -229,12 +271,18 @@ const Signup: React.FC<SignupProps> = ({
           }}
         </Formik>
         <div className="mt-6 text-center">
-          <Link to="/login" className="text-sm text-blue-600 hover:underline">
-            Already have an account? Log in
-          </Link>
+          <p className="text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-green-600 hover:text-green-700 font-medium"
+            >
+              Log in
+            </Link>
+          </p>
         </div>
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </div>
   );
 };

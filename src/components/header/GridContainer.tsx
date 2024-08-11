@@ -1,5 +1,4 @@
 import React from "react";
-import homeLogo from "../../assets/homelogo.svg"; // Adjust the path if needed
 
 type GridItem = {
   name: string;

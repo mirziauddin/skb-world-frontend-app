@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { usePasswordStore } from "../../middleware/register/usePasswordStore";
 
 interface ResetPasswordProps {
   title?: string;
@@ -19,10 +20,33 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
   reenterNewPasswordPlaceholder = "Re-enter new password",
   buttonText = "Reset Password",
 }) => {
+  const {
+    previousPassword,
+    newPassword,
+    reenterNewPassword,
+    setPreviousPassword,
+    setNewPassword,
+    setReenterNewPassword,
+    resetForm,
+  } = usePasswordStore();
+
+  useEffect(() => {
+    setPreviousPassword(previousPassword);
+    setNewPassword(newPassword);
+    setReenterNewPassword(reenterNewPassword);
+  }, [
+    previousPassword,
+    newPassword,
+    reenterNewPassword,
+    setPreviousPassword,
+    setNewPassword,
+    setReenterNewPassword,
+  ]);
+
   const initialValues = {
-    previousPassword: "",
-    newPassword: "",
-    reenterNewPassword: "",
+    previousPassword,
+    newPassword,
+    reenterNewPassword,
   };
 
   const validationSchema = Yup.object({
@@ -35,7 +59,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
 
   const handleSubmit = (
     values: typeof initialValues,
-    { resetForm }: { resetForm: () => void }
+    { resetForm: resetFormikForm }: { resetForm: () => void }
   ) => {
     console.log("Resetting password with:", {
       previousPassword: values.previousPassword,
@@ -43,6 +67,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
     });
 
     // Clear input fields
+    resetFormikForm();
     resetForm();
 
     toast.success("Password reset successful!");
@@ -60,7 +85,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, handleChange }) => (
             <Form className="space-y-4">
               <div>
                 <label
@@ -75,6 +100,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
                   name="previousPassword"
                   placeholder={previousPasswordPlaceholder}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setPreviousPassword(e.target.value);
+                    handleChange(e); // Ensure Formik handles the change as well
+                  }}
                 />
                 <ErrorMessage
                   name="previousPassword"
@@ -95,6 +124,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
                   name="newPassword"
                   placeholder={newPasswordPlaceholder}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setNewPassword(e.target.value);
+                    handleChange(e); // Ensure Formik handles the change as well
+                  }}
                 />
                 <ErrorMessage
                   name="newPassword"
@@ -115,6 +148,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
                   name="reenterNewPassword"
                   placeholder={reenterNewPasswordPlaceholder}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setReenterNewPassword(e.target.value);
+                    handleChange(e); // Ensure Formik handles the change as well
+                  }}
                 />
                 <ErrorMessage
                   name="reenterNewPassword"
