@@ -15,6 +15,7 @@ import ResetPassword from "./components/Resgiter/ResetPassword";
 import ForgotPassword from "./components/Resgiter/ForgotPassword";
 import UserDashboard from "./pages/userDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import MiniDrawer from "./components/admindashboard/sideNavbar";
 
 export default function App() {
   // Create references for each section
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/sidenavbar" element={<MiniDrawer />} />
       </Routes>
       <Footer sections={footerSections} />
     </>
