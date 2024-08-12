@@ -38,7 +38,7 @@ const Login: React.FC<LoginProps> = ({
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(`${BASE_URL}auth/login`, values);
+        const response = await axios.post(`${BASE_URL}/auth/login`, values);
         const { role } = response.data;
 
         // Store the role using Zustand

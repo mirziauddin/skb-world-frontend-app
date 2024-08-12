@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaCheck } from "react-icons/fa";
 import axios from "axios";
 import { useSignupStore } from "../../middleware/register/useSignupStore";
+import { BASE_URL } from "../../utils";
+
 interface SignupProps {
   title?: string;
   namePlaceholder?: string;
@@ -54,7 +56,11 @@ const Signup: React.FC<SignupProps> = ({
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters long")
+      .matches(/[A-Za-z]/, "Password must contain at least one letter")
+      .matches(/\d/, "Password must contain at least one number")
+      .required("Password is required"),
     repassword: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Re-enter Password is required"),
@@ -69,8 +75,7 @@ const Signup: React.FC<SignupProps> = ({
     { resetForm: resetFormikForm }: { resetForm: () => void }
   ) => {
     try {
-      // check again the sigm up is work or nots
-      await axios.post("http://localhost:8080/api/v1/auth/signup", {
+      await axios.post(`${BASE_URL}/auth/signup`, {
         email: values.email,
         name: values.name,
         password: values.password,
@@ -83,7 +88,13 @@ const Signup: React.FC<SignupProps> = ({
         navigate("/login");
       }, 2000);
     } catch (error) {
-      toast.error("Signup failed. Please try again.");
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+          error.response.data.message || "Signup failed. Please try again.";
+        toast.error(`Signup failed: ${errorMessage}`);
+      } else {
+        toast.error("Signup failed: An unknown error occurred.");
+      }
     }
   };
 
@@ -258,26 +269,29 @@ const Signup: React.FC<SignupProps> = ({
                 />
                 <button
                   type="submit"
-                  className="w-full bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                  disabled={isSubmitting || !allValid}
+                  className={`w-full text-white font-bold py-2 px-4 rounded ${
+                    allValid && values.acceptConditions
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  disabled={
+                    isSubmitting || !allValid || !values.acceptConditions
+                  }
                 >
                   {buttonText}
                 </button>
+                <div className="mt-4 text-center">
+                  <Link
+                    to="/login"
+                    className="text-sm font-medium text-green-600 hover:text-green-500"
+                  >
+                    Already have an account? Log in
+                  </Link>
+                </div>
               </Form>
             );
           }}
         </Formik>
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-green-600 hover:text-green-700 font-medium"
-            >
-              Log in
-            </Link>
-          </p>
-        </div>
       </div>
       <ToastContainer />
     </div>
