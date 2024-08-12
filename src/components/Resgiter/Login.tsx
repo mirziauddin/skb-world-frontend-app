@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthStore } from "../../middleware/register/useAuthStore";
+import { BASE_URL } from "../../utils";
 
 interface LoginProps {
   title?: string;
@@ -37,10 +38,7 @@ const Login: React.FC<LoginProps> = ({
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/api/v1/auth/login",
-          values
-        );
+        const response = await axios.post(`${BASE_URL}auth/login`, values);
         const { role } = response.data;
 
         // Store the role using Zustand

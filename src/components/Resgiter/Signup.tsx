@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaCheck } from "react-icons/fa";
 import axios from "axios";
 import { useSignupStore } from "../../middleware/register/useSignupStore";
-import { BASE_URL } from "../../utils";
 interface SignupProps {
   title?: string;
   namePlaceholder?: string;
@@ -71,7 +70,7 @@ const Signup: React.FC<SignupProps> = ({
   ) => {
     try {
       // check again the sigm up is work or nots
-      const response = await axios.post(`${BASE_URL}auth/signup`, {
+      await axios.post("http://localhost:8080/api/v1/auth/signup", {
         email: values.email,
         name: values.name,
         password: values.password,

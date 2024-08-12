@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import skbcompany from "../../assets/skbcompany2.png";
 import AnimatedText from "./AnimatedText";
 import useHomeStore from "../../middleware/header/useHomeStore";
