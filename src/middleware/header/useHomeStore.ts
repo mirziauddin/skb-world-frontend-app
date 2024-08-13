@@ -1,5 +1,5 @@
 // src/store/useHomeStore.ts
-import create from "zustand";
+import { create } from "zustand";
 
 interface HomeState {
   animate: boolean;

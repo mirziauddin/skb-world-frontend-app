@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({
   contactRef,
 }) => {
   const [isSideMenuOpen, setMenu] = React.useState(false);
-  const { isLoggedIn, userRole, setAuth, clearAuth } = useAuthStore(); // Use Zustand store
+  const { isLoggedIn, userRole, setAuth, clearAuth } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -77,20 +77,20 @@ const Navbar: React.FC<NavbarProps> = ({
       if (ref) scrollToRef(ref);
     } else {
       navigate(path);
-      if (ref) setTimeout(() => scrollToRef(ref), 100); // Delay to allow navigation before scrolling
+      if (ref) setTimeout(() => scrollToRef(ref), 100);
     }
     setMenu(false);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("authData");
-    clearAuth(); // Clear Zustand state
+    clearAuth();
     navigate("/login");
   };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-screen bg-white shadow-md z-50 flex justify-between px-8 items-center py-4 lg:px-24">
+      <nav className="fixed top-0 left-0 w-full h-14 bg-white shadow-md z-50 flex justify-between px-8 items-center py-4 lg:px-24">
         <div className="flex items-center gap-8">
           <section className="flex items-center gap-4">
             <GiHamburgerMenu
@@ -99,7 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({
             />
             <img
               src={skbcompany}
-              alt="Our Work"
+              alt="Company Logo"
               className="w-full h-full max-w-60 md:max-w-60"
             />
           </section>
@@ -158,21 +158,24 @@ const Navbar: React.FC<NavbarProps> = ({
               </button>
             </div>
           )}
-          {isLoggedIn ? (
-            <button
-              className="bg-red-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-red-700"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          ) : (
-            <button
-              className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
-          )}
+
+          {/* Login/Logout Button */}
+          <button
+            className={`py-2 px-4 text-center text-sm rounded ${
+              isLoggedIn
+                ? "bg-red-600 hover:bg-red-700 text-white"
+                : "bg-green-600 hover:bg-green-700 text-white"
+            }`}
+            onClick={() => {
+              if (isLoggedIn) {
+                handleLogout();
+              } else {
+                navigate("/login");
+              }
+            }}
+          >
+            {isLoggedIn ? "Logout" : "Login"}
+          </button>
         </section>
       </nav>
       <div className="pt-16 lg:pt-20"></div>

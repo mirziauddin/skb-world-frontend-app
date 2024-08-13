@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Route, Routes } from "react-router-dom";
-
 import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/header/NavBar";
 import About from "./components/header/About";
@@ -14,8 +13,8 @@ import { Footer, footerSections } from "./components/header/Footer";
 import ResetPassword from "./components/Resgiter/ResetPassword";
 import ForgotPassword from "./components/Resgiter/ForgotPassword";
 import UserDashboard from "./pages/userDashboard";
+
 import AdminDashboard from "./pages/AdminDashboard";
-import MiniDrawer from "./components/admindashboard/sideNavbar";
 
 export default function App() {
   // Create references for each section
@@ -55,10 +54,11 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
+        {/* <Route path="/adminDashboard" element={<AdminSideBar />} /> */}
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
-        <Route path="/sidenavbar" element={<MiniDrawer />} />
+        //admin home
       </Routes>
       <Footer sections={footerSections} />
     </>
