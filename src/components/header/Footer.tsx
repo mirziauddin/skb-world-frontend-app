@@ -7,7 +7,7 @@ type FooterProps = {
 
 export const Footer: React.FC<FooterProps> = ({ sections }) => {
   return (
-    <footer className="bg-black text-white py-12  w-screen pt-44">
+    <footer className="bg-black text-white py-12  w-screen mt-24">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-5 gap-8 text-center md:text-left">
         {sections.map((section, index) => (
           <div key={index}>

@@ -4,7 +4,6 @@ import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/header/NavBar";
 import About from "./components/header/About";
 import Contact from "./components/header/Contact";
-import Home from "./components/header/Home";
 import AllCourses from "./components/header/AllCourses";
 import Service from "./components/header/Service";
 import Login from "./components/Resgiter/Login";
@@ -15,6 +14,9 @@ import ForgotPassword from "./components/Resgiter/ForgotPassword";
 import UserDashboard from "./pages/userDashboard";
 
 import AdminDashboard from "./pages/AdminDashboard";
+import Home from "./components/header/Home";
+import AdminCatagory from "./components/admindashboard/AdminCatagory";
+import AdminSubCategory from "./components/admindashboard/AdminSubCategory";
 
 export default function App() {
   // Create references for each section
@@ -53,8 +55,10 @@ export default function App() {
         <Route path="/services" element={<Service />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        //admin panel
         <Route path="/adminDashboard" element={<AdminDashboard />} />
-        {/* <Route path="/adminDashboard" element={<AdminSideBar />} /> */}
+        <Route path="/adminCategory" element={<AdminCatagory />} />
+        <Route path="/adminSubCategory" element={<AdminSubCategory />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword" element={<ResetPassword />} />

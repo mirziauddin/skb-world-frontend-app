@@ -26,8 +26,12 @@ interface AdminSideBarProps {
 function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
   const menuItems: MenuItem[] = [
     { name: "Dashboard", icon: BsGrid1X2Fill, href: "adminDashboard" },
-    { name: "Categories", icon: BsFillArchiveFill, href: "#" },
-    { name: "SubCategories", icon: BsFillGrid3X3GapFill, href: "#" },
+    { name: "Categories", icon: BsFillArchiveFill, href: "adminCategory" },
+    {
+      name: "SubCategories",
+      icon: BsFillGrid3X3GapFill,
+      href: "adminSubCategory",
+    },
     { name: "AllUser", icon: BsPeopleFill, href: "#" },
     { name: "Payment History", icon: BsListCheck, href: "#" },
     { name: "Reports", icon: BsMenuButtonWideFill, href: "#" },

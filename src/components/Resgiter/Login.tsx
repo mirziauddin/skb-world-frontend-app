@@ -133,7 +133,7 @@ const Login: React.FC<LoginProps> = ({
         </div>
         <div className="mt-4 text-center">
           <Link
-            to="/register"
+            to="/signup"
             className="text-sm font-medium text-green-600 hover:text-green-500"
           >
             {createAccountText}
