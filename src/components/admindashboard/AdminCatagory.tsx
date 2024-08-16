@@ -68,8 +68,6 @@ const AdminCategory = () => {
       const response = await axiosInstance.post("/catagory", {
         name: newCategory.name,
         description: newCategory.Desc,
-        createdAt: newCategory.Date,
-        updatedAt: newCategory.Date,
       });
       console.log("Category added to database:", response.data);
       addCategory(response.data);

@@ -17,6 +17,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Home from "./components/header/Home";
 import AdminCatagory from "./components/admindashboard/AdminCatagory";
 import AdminSubCategory from "./components/admindashboard/AdminSubCategory";
+import AdminAllUsers from "./components/admindashboard/AdminAllUsers";
 
 export default function App() {
   // Create references for each section
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path="/adminCategory" element={<AdminCatagory />} />
         <Route path="/adminSubCategory" element={<AdminSubCategory />} />
+        <Route path="/adminAllUsers" element={<AdminAllUsers />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword" element={<ResetPassword />} />

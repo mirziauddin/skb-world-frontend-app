@@ -1,11 +1,13 @@
 // src/middleware/Admin/axiosInstance.ts
 import axios from "axios";
-import { BASE_URL } from "../../utils";
+import { BASE_URL, REACT_APP_AUTH_TOKEN } from "../../utils";
+
+console.log("Using Authorization Token:", REACT_APP_AUTH_TOKEN);
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmIzODhmODZmNWViMjUyZWYwODE0ZGYiLCJpYXQiOjE3MjMxMzUzMTd9.7qCo8cnU_S0RbsbQFK5HkSHdF5bttgT8g-WW0NNuV0Y`,
+    Authorization: `Bearer ${REACT_APP_AUTH_TOKEN}`,
   },
 });
 

@@ -32,7 +32,7 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
       icon: BsFillGrid3X3GapFill,
       href: "adminSubCategory",
     },
-    { name: "AllUser", icon: BsPeopleFill, href: "#" },
+    { name: "AllUser", icon: BsPeopleFill, href: "adminAllUsers" },
     { name: "Payment History", icon: BsListCheck, href: "#" },
     { name: "Reports", icon: BsMenuButtonWideFill, href: "#" },
     { name: "Settings", icon: BsFillGearFill, href: "#" },
