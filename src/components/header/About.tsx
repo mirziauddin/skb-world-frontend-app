@@ -20,7 +20,7 @@ const About: React.FC = () => {
     "Our company focuses on using responsive design, React.js, Tailwind CSS, and TypeScript to create efficient and scalable web applications. We strive to stay at the forefront of technology to provide the best possible solutions to our clients.";
 
   return (
-    <div className="w-full min-h-screen p-8 bg-gray-100 flex flex-col items-center justify-center">
+    <div className="w-full min-h-screen p-8 bg-black flex flex-col items-center justify-center">
       <div className="text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">
           <DynamicText text="About" /> Us
