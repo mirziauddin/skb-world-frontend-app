@@ -1,4 +1,3 @@
-// src/components/AdminCategory.tsx
 import { useState } from "react";
 import AdminSideBar from "./AdminSideBar";
 import AdminNavbar from "./AdminNavbar";
@@ -16,6 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import useCategoryStore from "../../middleware/Admin/CategoryState";
 import axiosInstance from "../../middleware/Admin/axiosInstance";
+import { AxiosError } from "axios";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -63,12 +63,35 @@ const AdminCategory = () => {
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    // Retrieve the token from localStorage
+    const authData = localStorage.getItem("authData");
+    const token = authData ? JSON.parse(authData).token : null;
+
+    // Print the token to the console
+    console.log("Token:", token);
+
+    if (!token) {
+      console.error("No token found. Please log in again.");
+      return;
+    }
+
     try {
       console.log("Adding new category:", newCategory); // Log the new category data
-      const response = await axiosInstance.post("/catagory", {
-        name: newCategory.name,
-        description: newCategory.Desc,
-      });
+
+      const response = await axiosInstance.post(
+        "/catagory",
+        {
+          name: newCategory.name,
+          description: newCategory.Desc,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the header
+          },
+        }
+      );
+
       console.log("Category added to database:", response.data);
       addCategory(response.data);
       setFormVisible(false);
@@ -78,7 +101,14 @@ const AdminCategory = () => {
         Date: new Date().toISOString().split("T")[0],
       });
     } catch (error) {
-      console.error("Failed to add category:", error);
+      if (error instanceof AxiosError) {
+        console.error(
+          "Failed to add category:",
+          error.response?.data || error.message
+        );
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
     }
   };
 

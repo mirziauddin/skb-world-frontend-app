@@ -19,8 +19,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { BASE_URL } from "../../utils";
-import AddUserForm from "./usersCRUD/AddUserForm";
 import UpdateUserForm from "./usersCRUD/UpdateUserForm";
+import AddUserForm from "./usersCRUD/AddUserForm";
 
 interface User {
   id: string;

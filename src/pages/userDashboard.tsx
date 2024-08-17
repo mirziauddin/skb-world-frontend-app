@@ -1,17 +1,31 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import UserSideBar from "../components/usersadhboard/UserSideBar";
+import UserNavbar from "../components/usersadhboard/UserNavbar";
+import UserHome from "../components/usersadhboard/UserHome";
 
-const UserDashboard: React.FC = () => {
+type Props = {};
+
+export default function UserDashboard({}: Props) {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-3xl font-bold">User Dashboard</h1>
-      {/* Add more user-specific content here */}
+    <div className="flex">
+      <UserSideBar
+        openSidebarToggle={openSidebarToggle}
+        OpenSidebar={OpenSidebar}
+      />
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          openSidebarToggle ? "ml-64" : "ml-0"
+        }`}
+      >
+        <UserNavbar OpenSidebar={OpenSidebar} />
+        <UserHome />
+      </div>
     </div>
   );
-};
-
-export default UserDashboard;
+}
