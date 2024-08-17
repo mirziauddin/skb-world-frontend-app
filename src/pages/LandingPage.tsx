@@ -42,7 +42,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       </div>
       <div
         ref={aboutRef}
-        className="flex items-center justify-center w-full min-h-screen bg-white"
+        className="flex items-center justify-center w-full min-h-screen bg-black"
       >
         <About />
       </div>
