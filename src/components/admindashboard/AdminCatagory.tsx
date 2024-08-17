@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminSideBar from "./AdminSideBar";
 import AdminNavbar from "./AdminNavbar";
 import * as React from "react";
@@ -44,9 +44,9 @@ const AdminCategory = () => {
     Desc: "",
     Date: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
   });
+  const [categories, setCategories] = useState<any[]>([]); // Local state to store categories
 
-  const { searchQuery, setSearchQuery, categories, addCategory } =
-    useCategoryStore();
+  const { searchQuery, setSearchQuery, addCategory } = useCategoryStore();
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
@@ -94,6 +94,7 @@ const AdminCategory = () => {
 
       console.log("Category added to database:", response.data);
       addCategory(response.data);
+      setCategories((prevCategories) => [...prevCategories, response.data]); // Update local state
       setFormVisible(false);
       setNewCategory({
         name: "",
@@ -111,6 +112,32 @@ const AdminCategory = () => {
       }
     }
   };
+
+  // Fetch categories when the component mounts
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const authData = localStorage.getItem("authData");
+      const token = authData ? JSON.parse(authData).token : null;
+
+      if (!token) {
+        console.error("No token found. Please log in again.");
+        return;
+      }
+
+      try {
+        const response = await axiosInstance.get("/catagory", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the header
+          },
+        });
+        setCategories(response.data); // Update local state with fetched data
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <>
