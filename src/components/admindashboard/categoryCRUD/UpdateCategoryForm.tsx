@@ -32,7 +32,7 @@ export default function UpdateCategoryForm({
     }
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${BASE_URL}/catagory/${categoryId}`, // Ensure this URL is correct
         {
           name,

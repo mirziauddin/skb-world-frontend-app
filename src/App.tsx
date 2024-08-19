@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { useRef } from "react";
+import { Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/header/NavBar";
 import About from "./components/header/About";
@@ -17,7 +17,7 @@ import Home from "./components/header/Home";
 import AdminCatagory from "./components/admindashboard/AdminCatagory";
 import AdminSubCategory from "./components/admindashboard/AdminSubCategory";
 import AdminAllUsers from "./components/admindashboard/AdminAllUsers";
-import useAuth from "./hooks/useAuth";
+// import useAuth from "./hooks/useAuth";
 import PublicAllCourses from "./components/public/PublicAllCourses";
 // import Protectedroute from "./layout/protected";
 

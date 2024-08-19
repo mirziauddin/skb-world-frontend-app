@@ -18,7 +18,7 @@ interface AddUserFormProps {
 }
 
 const AddUserForm: React.FC<AddUserFormProps> = ({ onAddUser }) => {
-  const { formData, closeForm, updateFormData } = useUserStore();
+  const { formData, closeForm } = useUserStore();
 
   const handleSubmit = async (values: typeof formData) => {
     try {
