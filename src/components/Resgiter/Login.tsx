@@ -2,11 +2,12 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { BASE_URL } from "../../utils";
-import useAuthStore from "../../middleware/register/useAuthStore";
+import useAuth from "../../hooks/useAuth";
 
 interface LoginProps {
   title?: string;
@@ -26,7 +27,7 @@ const Login: React.FC<LoginProps> = ({
   createAccountText = "Don't have an account?",
 }) => {
   const navigate = useNavigate();
-  const { setAuth, setRole } = useAuthStore();
+  const { setUser } = useAuth();
 
   const initialValues = {
     email: "",
@@ -34,27 +35,50 @@ const Login: React.FC<LoginProps> = ({
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string().required("Required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
   });
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
-      const response = await axios.post(`${BASE_URL}/auth/login`, values);
-      const { token, role } = response.data;
-      localStorage.setItem("authData", JSON.stringify({ token, role }));
-      setAuth(true, role);
-      setRole(role);
-      toast.success("Login successful!");
-      setTimeout(() => {
-        if (role === "ADMIN") {
-          navigate("/adminDashboard");
-        } else {
-          navigate("/userDashboard");
-        }
-      }, 2000); // Delay for toast display
+      const response = await axios.post(`${BASE_URL}/auth/login`, {
+        email: values.email,
+        password: values.password,
+      });
+
+      console.log(response.data); // Log the entire response
+
+      if (response.data) {
+        const { user, token } = response.data;
+        setUser(user);
+        localStorage.setItem("ACCESS_TOKEN", token);
+
+        console.log("Hello", token);
+
+        Swal.fire({
+          icon: "success",
+          title: "Successful",
+          text: "You have successfully logged in",
+        }).then(() => {
+          setTimeout(() => {
+            if (user.role === "ADMIN") {
+              navigate("/adminDashboard");
+            } else {
+              navigate("/userDashboard");
+            }
+          }, 2000);
+        });
+      } else {
+        toast.error(response.data?.message || "Login failed");
+      }
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.");
+      const err = error as any;
+      console.error("Login error:", err);
+      toast.error(
+        err.response?.data?.message || "An error occurred. Please try again."
+      );
     }
   };
 
