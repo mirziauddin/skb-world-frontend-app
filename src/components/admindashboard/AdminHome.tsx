@@ -7,7 +7,7 @@ import {
 
 function AdminHome() {
   return (
-    <main className="flex flex-col p-5 bg-gray-900 text-white h-full overflow-y-auto">
+    <main className="flex flex-col p-5 bg-green-900 text-white h-full overflow-y-auto">
       <div className="text-xl font-bold mb-5">DASHBOARD</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

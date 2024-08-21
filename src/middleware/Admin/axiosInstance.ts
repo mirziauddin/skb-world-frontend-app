@@ -1,8 +1,9 @@
 // src/utils/axiosConfig.ts
 import axios from "axios";
+import { BASE_URL } from "../../utils";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/api/v1",
+  baseURL: BASE_URL,
 });
 
 axiosInstance.interceptors.request.use(

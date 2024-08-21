@@ -31,7 +31,8 @@ export default function AdminDashboard({}: Props) {
         <AdminNavbar OpenSidebar={OpenSidebar} />
         <AdminHome />
         DashBoard of
-        {!user ? <>Loading...</> : <> {user?.name}</>}
+        {!user ? <>Loading...</> : <> {user?.name}</>} <br />
+        {!user ? <>Loading...</> : <> {user?.email}</>}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import {
 
 function AdminNavbar({ OpenSidebar }: { OpenSidebar: () => void }) {
   return (
-    <header className="flex justify-between items-center p-4 bg-gray-800 text-white">
+    <header className="flex justify-between items-center p-4 bg-green-800 text-white">
       <div className="cursor-pointer">
         <BsJustify className="text-2xl" onClick={OpenSidebar} />
       </div>

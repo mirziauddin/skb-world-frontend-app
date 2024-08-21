@@ -13,7 +13,9 @@ interface Category {
 interface CategoryState {
   categories: Category[];
   searchQuery: string;
+  categoryId: string; // Added categoryId
   setSearchQuery: (query: string) => void;
+  setCategoryId: (id: string) => void; // Added setter for categoryId
   fetchCategories: () => void;
   addCategory: (
     category: Omit<Category, "id" | "createdAt" | "updatedAt">
@@ -25,7 +27,9 @@ interface CategoryState {
 const useCategoryStore = create<CategoryState>((set) => ({
   categories: [],
   searchQuery: "",
+  categoryId: "", // Initialize categoryId
   setSearchQuery: (query) => set({ searchQuery: query }),
+  setCategoryId: (id) => set({ categoryId: id }), // Setter for categoryId
 
   fetchCategories: async () => {
     const accessToken = getFromLocalStorage("ACCESS_TOKEN");
@@ -37,7 +41,6 @@ const useCategoryStore = create<CategoryState>((set) => ({
 
     try {
       const response = await fetch(`${BASE_URL}/catagory`, {
-        // Fixed endpoint
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -65,7 +68,6 @@ const useCategoryStore = create<CategoryState>((set) => ({
 
     try {
       const response = await fetch(`${BASE_URL}/catagory`, {
-        // Fixed endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +96,6 @@ const useCategoryStore = create<CategoryState>((set) => ({
 
     try {
       const response = await fetch(`${BASE_URL}/catagory/${id}`, {
-        // Fixed endpoint
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +127,6 @@ const useCategoryStore = create<CategoryState>((set) => ({
 
     try {
       const response = await fetch(`${BASE_URL}/catagory/${id}`, {
-        // Fixed endpoint
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${accessToken}`,

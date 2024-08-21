@@ -40,7 +40,7 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
 
   return (
     <aside
-      className={`bg-gray-800 h-full transition-all duration-300 fixed ${
+      className={`bg-green-800 h-full transition-all duration-300 fixed ${
         openSidebarToggle ? "w-64" : "w-0"
       } overflow-hidden`}
     >
@@ -61,7 +61,7 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
           <li className="px-8" key={index}>
             <a
               href={item.href}
-              className="flex items-center text-gray-400 hover:text-white"
+              className="flex items-center text-white hover:text-black"
             >
               <item.icon className="mr-2 text-xl" /> {item.name}
             </a>
