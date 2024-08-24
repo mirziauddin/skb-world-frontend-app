@@ -12,9 +12,10 @@ export default function AdminDashboard({}: Props) {
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
-  const { isUserLoading } = useAuth();
-  // console.log(localStorage);
-  // console.log(user);
+
+  const { user, isUserLoading } = useAuth();
+  const userId = user?.id ?? ""; // Provide a fallback value
+
   console.log("isUserLoading : ", isUserLoading);
 
   return (
@@ -28,11 +29,8 @@ export default function AdminDashboard({}: Props) {
           openSidebarToggle ? "ml-64" : "ml-0"
         }`}
       >
-        <AdminNavbar OpenSidebar={OpenSidebar} />
+        <AdminNavbar OpenSidebar={OpenSidebar} userId={userId} />
         <AdminHome />
-        {/* DashBoard of
-        {!user ? <>Loading...</> : <> {user?.name}</>} <br />
-        {!user ? <>Loading...</> : <> {user?.email}</>} */}
       </div>
     </div>
   );

@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useCategoryStore from "./zustand/useCategoryStore";
 import { Button } from "@mui/base/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function PublicAllCourses() {
   const { categories, loading, error, fetchCategories } = useCategoryStore();
-  const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(
-    null
-  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,16 +14,12 @@ export default function PublicAllCourses() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
-  const toggleDescription = (id: string) => {
-    setExpandedCategoryId((prevId) => (prevId === id ? null : id));
-  };
-
   const handleCategoryClick = (categoryId: string) => {
     navigate(`/subcategories/${categoryId}`);
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
       {categories.map((category) => (
         <div
           key={category.id}
@@ -40,14 +33,13 @@ export default function PublicAllCourses() {
             />
           )}
           <div className="p-4">
-            <h3 className="text-lg font-semibold truncate">{category.name}</h3>
-            <p
-              className={`text-sm text-gray-600 ${
-                expandedCategoryId === category.id
-                  ? "line-clamp-none"
-                  : "line-clamp-3"
-              }`}
+            <h3
+              className="text-lg font-semibold truncate cursor-pointer hover:text-gray-500"
+              onClick={() => handleCategoryClick(category.id)}
             >
+              {category.name}
+            </h3>
+            <p className="text-sm text-gray-600 line-clamp-3">
               {category.description || "No description available"}
             </p>
             <div className="relative py-4">
@@ -62,25 +54,19 @@ export default function PublicAllCourses() {
               </div>
               <hr className="border-t-2 border-gray-300 relative before:absolute before:top-2 before:left-0 before:w-1/2 before:h-1 before:bg-gray-500 after:absolute after:top-2 after:right-0 after:w-1/2 after:h-1 after:bg-gray-700" />
             </div>
-            <pre className="text-sm text-gray-600">
-              postDate:{" "}
-              {new Date(category.createdAt || "").toLocaleDateString()}
-            </pre>
-          </div>
-          <div className="flex justify-between p-4 border-t border-gray-200">
-            <button
-              className="text-blue-500 hover:text-blue-700"
-              onClick={() => toggleDescription(category.id)}
-            >
-              {expandedCategoryId === category.id ? "Show Less" : "Read More"}
-            </button>
-            <Button
-              type="button"
-              className={`text-white text-sm py-1 px-3 rounded-full bg-green-500 hover:bg-green-300`}
-              onClick={() => handleCategoryClick(category.id)}
-            >
-              Click here
-            </Button>
+            <div className="flex justify-between items-center">
+              <pre className="text-sm text-gray-600">
+                postDate:{" "}
+                {new Date(category.createdAt || "").toLocaleDateString()}
+              </pre>
+              <Button
+                type="button"
+                className={`text-white text-sm py-1 px-3 rounded-full bg-green-500 hover:bg-green-300`}
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                Click here
+              </Button>
+            </div>
           </div>
         </div>
       ))}

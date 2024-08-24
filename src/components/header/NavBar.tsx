@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdCloseFullscreen } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -19,6 +19,7 @@ type NavLink = {
   label: string;
   path: string;
   ref?: React.RefObject<HTMLDivElement>;
+  dropdownOptions?: { label: string; path: string }[];
 };
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -28,7 +29,8 @@ const Navbar: React.FC<NavbarProps> = ({
   aboutRef,
   contactRef,
 }) => {
-  const [isSideMenuOpen, setMenu] = React.useState(false);
+  const [isSideMenuOpen, setMenu] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { isLoggedIn, userRole, setAuth, clearAuth } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,7 +65,15 @@ const Navbar: React.FC<NavbarProps> = ({
         ]
     : [
         { label: "Home", ref: homeRef, path: "/" },
-        { label: "All Courses", ref: allCoursesRef, path: "/" },
+        {
+          label: "All Courses",
+          ref: allCoursesRef,
+          path: "/",
+          dropdownOptions: [
+            { label: "Recent Courses", path: "/allCourses" },
+            { label: "All Courses", path: "/publicAllCourses" },
+          ],
+        },
         { label: "Services", ref: servicesRef, path: "/" },
         { label: "About", ref: aboutRef, path: "/" },
         { label: "Contact", ref: contactRef, path: "/" },
@@ -137,13 +147,32 @@ const Navbar: React.FC<NavbarProps> = ({
         {/* Navigation Links for larger screens */}
         <section className="flex items-center gap-4">
           {navlinks.map((data, i) => (
-            <button
+            <div
               key={i}
-              className="hidden lg:block text-gray-400 pr-5 hover:text-black"
-              onClick={() => handleNavigation(data.path, data.ref)}
+              className="relative hidden lg:block text-gray-400 pr-5 hover:text-black"
+              onMouseEnter={() => data.dropdownOptions && setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
             >
-              {data.label}
-            </button>
+              <button
+                className="text-gray-400 hover:text-black"
+                onClick={() => handleNavigation(data.path, data.ref)}
+              >
+                {data.label}
+              </button>
+              {data.dropdownOptions && isDropdownOpen && (
+                <div className="absolute top-full left-0 bg-white shadow-lg py-2 z-50">
+                  {data.dropdownOptions.map((option, j) => (
+                    <button
+                      key={j}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-200 w-full text-left"
+                      onClick={() => handleNavigation(option.path)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           {/* Search Input */}
           {!isLoggedIn && (

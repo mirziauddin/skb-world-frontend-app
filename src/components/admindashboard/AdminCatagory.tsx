@@ -33,7 +33,7 @@ type Category = {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "green", // Change the background color to green
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -167,7 +167,7 @@ const AdminCategory = () => {
             openSidebarToggle ? "ml-64" : "ml-0"
           }`}
         >
-          <AdminNavbar OpenSidebar={OpenSidebar} />
+          <AdminNavbar OpenSidebar={OpenSidebar} userId={""} />
           <div className="p-4">
             <div className="flex justify-between items-center mb-4">
               <TextField
@@ -182,7 +182,7 @@ const AdminCategory = () => {
               />
               <Button
                 variant="contained"
-                color="primary"
+                color="success"
                 onClick={() => setFormVisible(true)}
               >
                 Add Category
@@ -302,7 +302,7 @@ const AdminCategory = () => {
                               <img
                                 src={category.imageUpload}
                                 alt={category.name}
-                                className="w-24 h-24 object-cover"
+                                style={{ width: "100px" }}
                               />
                             )}
                           </StyledTableCell>
@@ -313,10 +313,7 @@ const AdminCategory = () => {
                             {category.updatedAt}
                           </StyledTableCell>
                           <StyledTableCell>
-                            <IconButton
-                              color="primary"
-                              onClick={() => handleEdit(category.id)}
-                            >
+                            <IconButton onClick={() => handleEdit(category.id)}>
                               <EditIcon />
                             </IconButton>
                             <IconButton

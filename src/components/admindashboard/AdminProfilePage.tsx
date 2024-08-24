@@ -25,6 +25,15 @@ function ProfilePage() {
     return <div>Loading...</div>; // Display loading message while data is being fetched
   }
 
+  // Format the createdAt date
+  const formattedDate = new Date(profileData.createdAt).toLocaleString(
+    "en-US",
+    {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }
+  );
+
   return (
     <div className="min-h-screen bg-green-800 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -32,9 +41,7 @@ function ProfilePage() {
         <div className="flex flex-col items-center">
           <div className="relative">
             <img
-              src={
-                profileData.profilePicture || "https://via.placeholder.com/150"
-              }
+              src={profileData.imageUpload || "https://via.placeholder.com/150"}
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover mb-4"
             />
@@ -68,40 +75,11 @@ function ProfilePage() {
             {profileData.name}
           </h2>
           <p className="text-gray-600">{profileData.email}</p>
-        </div>
-
-        {/* Profile Information Section */}
-        <div className="mt-8 space-y-4">
-          <div>
-            <label className="text-gray-600 block mb-2">Full Name</label>
-            <input
-              type="text"
-              value={profileData.name}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-              readOnly
-            />
-          </div>
-          <div>
-            <label className="text-gray-600 block mb-2">Email</label>
-            <input
-              type="email"
-              value={profileData.email}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-              readOnly
-            />
-          </div>
-          <div>
-            <label className="text-gray-600 block mb-2">Phone Number</label>
-            <input
-              type="text"
-              value={profileData.phone || "Not Available"}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"
-              readOnly
-            />
-          </div>
+          <p className="text-gray-600">{profileData.role}</p>
+          <p className="text-gray-600">Joining Date: {formattedDate}</p>
+          {/* <p className="text-gray-600">{profileData.password}</p> */}
         </div>
       </div>
-      DashBoard of {!user ? <>Loading...</> : <> {user?.id}</>}
     </div>
   );
 }

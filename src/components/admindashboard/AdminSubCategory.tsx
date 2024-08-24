@@ -176,7 +176,7 @@ const AdminSubCategory = () => {
           openSidebarToggle ? "ml-64" : "ml-0"
         }`}
       >
-        <AdminNavbar OpenSidebar={OpenSidebar} />
+        <AdminNavbar OpenSidebar={OpenSidebar} userId={""} />
         <div className="p-4">
           <Button
             variant="contained"

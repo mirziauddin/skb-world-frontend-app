@@ -21,6 +21,9 @@ import AdminAllUsers from "./components/admindashboard/AdminAllUsers";
 import PublicAllCourses from "./components/public/PublicAllCourses";
 import PublicAllSubCourses from "./components/public/PublicAllSubCourses";
 import AdminProfilePage from "./components/admindashboard/AdminProfilePage";
+import PaymentHistory from "./components/admindashboard/PaymentHistory";
+import AdminAllCourses from "./components/admindashboard/AdminAllCourses";
+import PublicPremiumPurchase from "./components/public/PublicPremiumPurchase";
 // import Protectedroute from "./layout/protected";
 
 export default function App() {
@@ -75,6 +78,8 @@ export default function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/admin/profile/:userId" element={<AdminProfilePage />} />
+        <Route path="/payment/history/" element={<PaymentHistory />} />
+        <Route path="/admin/courses" element={<AdminAllCourses />} />
         {/* </Route> */}
         //User panel
         <Route path="/userDashboard" element={<UserDashboard />} />
@@ -83,6 +88,10 @@ export default function App() {
         <Route
           path="/subcategories/:categoryId"
           element={<PublicAllSubCourses />}
+        />
+        <Route
+          path="/publicPremiumPurchase"
+          element={<PublicPremiumPurchase />}
         />
       </Routes>
       <Footer sections={footerSections} />

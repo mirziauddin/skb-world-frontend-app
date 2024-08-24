@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BsCart3,
   BsGrid1X2Fill,
@@ -8,14 +8,19 @@ import {
   BsListCheck,
   BsMenuButtonWideFill,
   BsFillGearFill,
+  BsPersonCircle,
+  BsChevronDown,
 } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 interface MenuItem {
   name: string;
   icon: IconType;
-  href: string;
+  onClick?: () => void;
+  subItems?: MenuItem[];
 }
 
 interface AdminSideBarProps {
@@ -24,18 +29,82 @@ interface AdminSideBarProps {
 }
 
 function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleViewProfile = () => {
+    navigate(`/admin/profile/${user?.id}`);
+    setIsSettingsOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from useAuth
+    navigate("/login"); // Redirect the user to the login page
+  };
+
+  const handleMouseEnter = () => {
+    setTimeout(() => {
+      setIsSettingsOpen(true);
+    }, 150); // Add a 1.5-second delay before opening the settings dropdown
+  };
+
+  const handleMouseLeave = () => {
+    setIsSettingsOpen(false);
+  };
+
+  const handleCategoryClick = () => {
+    navigate("/adminCategory"); // Navigate to the Categories page without reloading
+  };
+
   const menuItems: MenuItem[] = [
-    { name: "Dashboard", icon: BsGrid1X2Fill, href: "adminDashboard" },
-    { name: "Categories", icon: BsFillArchiveFill, href: "adminCategory" },
+    {
+      name: "Dashboard",
+      icon: BsGrid1X2Fill,
+      onClick: () => navigate("/adminDashboard"),
+    },
+    {
+      name: "Categories",
+      icon: BsFillArchiveFill,
+      onClick: handleCategoryClick,
+    },
     {
       name: "SubCategories",
       icon: BsFillGrid3X3GapFill,
-      href: "adminSubCategory",
+      onClick: () => navigate("/adminSubCategory"),
     },
-    { name: "AllUser", icon: BsPeopleFill, href: "adminAllUsers" },
-    { name: "Payment History", icon: BsListCheck, href: "#" },
-    { name: "Reports", icon: BsMenuButtonWideFill, href: "#" },
-    { name: "Settings", icon: BsFillGearFill, href: "#" },
+    {
+      name: "AllUser",
+      icon: BsPeopleFill,
+      onClick: () => navigate("/adminAllUsers"),
+    },
+    {
+      name: "Payment History",
+      icon: BsListCheck,
+      onClick: () => navigate("/payment/history/"),
+    },
+    {
+      name: "Reports",
+      icon: BsMenuButtonWideFill,
+      onClick: () => navigate("/admin/reports"),
+    },
+    {
+      name: "Settings",
+      icon: BsFillGearFill,
+      onClick: () => {}, // No navigation needed
+      subItems: [
+        {
+          name: "Profile",
+          icon: BsPersonCircle,
+          onClick: handleViewProfile,
+        },
+        {
+          name: "Logout",
+          icon: BsFillGearFill,
+          onClick: handleLogout, // Trigger the logout function on click
+        },
+      ],
+    },
   ];
 
   return (
@@ -58,13 +127,53 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
 
       <ul className="space-y-6">
         {menuItems.map((item, index) => (
-          <li className="px-8" key={index}>
+          <li
+            className="px-8"
+            key={index}
+            onMouseEnter={
+              item.name === "Settings" ? handleMouseEnter : undefined
+            }
+            onMouseLeave={
+              item.name === "Settings" ? handleMouseLeave : undefined
+            }
+          >
             <a
-              href={item.href}
+              href="#"
               className="flex items-center text-white hover:text-black"
+              onClick={(e) => {
+                e.preventDefault();
+                if (item.onClick) item.onClick();
+              }}
             >
               <item.icon className="mr-2 text-xl" /> {item.name}
+              {item.subItems && (
+                <BsChevronDown
+                  className={`ml-auto transform transition-transform ${
+                    isSettingsOpen && item.name === "Settings"
+                      ? "rotate-180"
+                      : ""
+                  }`}
+                />
+              )}
             </a>
+            {item.subItems && isSettingsOpen && item.name === "Settings" && (
+              <ul className="pl-8 mt-2 space-y-4">
+                {item.subItems.map((subItem, subIndex) => (
+                  <li key={subIndex}>
+                    <a
+                      href="#"
+                      className="flex items-center text-white hover:text-black"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (subItem.onClick) subItem.onClick();
+                      }}
+                    >
+                      <subItem.icon className="mr-2 text-lg" /> {subItem.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
