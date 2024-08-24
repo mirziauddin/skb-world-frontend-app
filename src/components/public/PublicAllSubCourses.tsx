@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../utils";
 import { Button } from "@mui/base/Button";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 type SubCategory = {
   id: string;
@@ -43,6 +43,9 @@ export default function PublicAllSubCourses() {
 
   const toggleDescription = (id: string) => {
     setExpandedCategoryId((prevId) => (prevId === id ? null : id));
+  };
+  const handleCategoryClick = () => {
+    // Navigate();
   };
 
   if (loading) return <p>Loading...</p>;
@@ -94,6 +97,13 @@ export default function PublicAllSubCourses() {
                 ? "Show Less"
                 : "Read More"}
             </button>
+            <Button
+              type="button"
+              className={`text-white text-sm py-1 px-3 rounded-full bg-green-500 hover:bg-green-300`}
+              onClick={() => handleCategoryClick()}
+            >
+              Click here
+            </Button>
           </div>
         </div>
       ))}

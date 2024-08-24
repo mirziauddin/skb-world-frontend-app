@@ -6,7 +6,7 @@ import {
 import { create } from "zustand";
 
 interface UserType {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   role: string;

@@ -93,11 +93,19 @@ const SubCategoryForm: React.FC<SubCategoryFormProps> = ({
     setFieldValue: any
   ) => {
     if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const maxSize = 4 * 1024 * 1024; // 4MB in bytes
+
+      if (file.size > maxSize) {
+        alert("File size exceeds 4MB. Please upload a smaller file.");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
         setFieldValue("pdfUpload", e.target?.result as string);
       };
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 

@@ -89,6 +89,7 @@ const useSubCategoryStore = create<SubCategoryState>((set) => ({
     }
 
     try {
+      // Uncomment and adjust the endpoint if necessary
       // const response = await axios.post(
       //   `${BASE_URL}/subCategory/`,
       //   { ...subCategoryData, categoryId },
@@ -152,22 +153,28 @@ const useSubCategoryStore = create<SubCategoryState>((set) => ({
 
   deleteSubCategory: async (subCategoryId: string) => {
     const accessToken = getFromLocalStorage("ACCESS_TOKEN");
+
     if (!accessToken) {
       console.error("No access token found");
       return;
     }
 
     try {
+      // Perform the DELETE request with the authorization header
       await axios.delete(`${BASE_URL}/subCatagory/${subCategoryId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+
+      // Update the Zustand store by removing the deleted subcategory
       set((state) => ({
         subCategories: state.subCategories.filter(
           (subCategory) => subCategory.id !== subCategoryId
         ),
       }));
+
+      console.log("Subcategory deleted successfully");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error(

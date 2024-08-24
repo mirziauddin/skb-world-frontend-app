@@ -276,17 +276,19 @@ const AdminSubCategory = () => {
                             </a>
                           )}
                         </TableCell>
-                        <TableCell>{subCategory.createdAt}</TableCell>
-                        <TableCell>{subCategory.updatedAt}</TableCell>
+                        <TableCell>
+                          {new Date(subCategory.createdAt).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>
+                          {new Date(subCategory.updatedAt).toLocaleDateString()}
+                        </TableCell>
                         <TableCell>
                           <IconButton
-                            color="primary"
                             onClick={() => handleEdit(subCategory.id)}
                           >
                             <EditIcon />
                           </IconButton>
                           <IconButton
-                            color="secondary"
                             onClick={() => handleDelete(subCategory.id)}
                           >
                             <DeleteIcon />
@@ -299,7 +301,6 @@ const AdminSubCategory = () => {
               </Table>
             </TableContainer>
           </div>
-
           <div className="block md:hidden">
             <Grid container spacing={2}>
               {filteredSubCategories.map((subCategory) => {
@@ -308,47 +309,58 @@ const AdminSubCategory = () => {
                 )?.name;
 
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={subCategory.id}>
+                  <Grid item xs={12} key={subCategory.id}>
                     <Card>
                       <CardContent>
-                        <Typography variant="h6" gutterBottom>
-                          {subCategory.name}
+                        <Typography variant="h6">{subCategory.name}</Typography>
+                        <Typography variant="body2">
+                          Category: {categoryName || "No Category"}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          {categoryName || "No Category"}
+                        <Typography variant="body2">
+                          Description: {subCategory.description}
+                        </Typography>
+                        <Typography variant="body2">
+                          Price: {subCategory.price}
                         </Typography>
                         {subCategory.imageUpload && (
                           <img
                             src={subCategory.imageUpload}
                             alt={subCategory.name}
-                            className="w-full h-40 object-cover my-2"
+                            className="w-full h-48 object-cover"
                           />
                         )}
-                        <Typography variant="body2" color="textSecondary">
-                          {subCategory.description}
+                        {subCategory.pdfUpload && (
+                          <a
+                            href={subCategory.pdfUpload}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View PDF
+                          </a>
+                        )}
+                        <Typography variant="body2">
+                          Created At:{" "}
+                          {new Date(subCategory.createdAt).toLocaleDateString()}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          ₹{subCategory.price}
+                        <Typography variant="body2">
+                          Updated At:{" "}
+                          {new Date(subCategory.updatedAt).toLocaleDateString()}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          {subCategory.createdAt}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          {subCategory.updatedAt}
-                        </Typography>
-                        <div className="flex justify-between mt-2">
-                          <IconButton
+                        <div className="flex space-x-2 mt-2">
+                          <Button
+                            variant="contained"
                             color="primary"
                             onClick={() => handleEdit(subCategory.id)}
                           >
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
+                            Edit
+                          </Button>
+                          <Button
+                            variant="contained"
                             color="secondary"
                             onClick={() => handleDelete(subCategory.id)}
                           >
-                            <DeleteIcon />
-                          </IconButton>
+                            Delete
+                          </Button>
                         </div>
                       </CardContent>
                     </Card>
