@@ -17,7 +17,7 @@ const Service: React.FC = () => {
     "Get in touch with us to find out more about our courses and how we can help you achieve your hardware training goals.";
 
   return (
-    <div className="w-full min-h-screen p-8 bg-gray-100 flex flex-col items-center justify-center">
+    <div className="w-full min-h-screen p-8 bg-white flex flex-col items-center justify-center">
       <div className="text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">{title}</h1>
         <p className="text-base md:text-lg text-gray-600">{description}</p>

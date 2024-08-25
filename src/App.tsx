@@ -25,10 +25,11 @@ import PaymentHistory from "./components/admindashboard/PaymentHistory";
 import AdminAllCourses from "./components/admindashboard/AdminAllCourses";
 import PublicPremiumPurchase from "./components/public/PublicPremiumPurchase";
 import UserProfilePage from "./components/usersadhboard/UserProfilePage";
-import Reports from "./components/admindashboard/reports";
+// import Reports from "./components/admindashboard/reports";
 import UserPaymentHistory from "./components/usersadhboard/UserPaymentHistory";
 import PurchaseCourse from "./components/usersadhboard/purchaseCourse";
 import MemberShip from "./components/usersadhboard/MemberShip";
+import Reports from "./components/admindashboard/Reports";
 // import Protectedroute from "./layout/protected";
 
 export default function App() {

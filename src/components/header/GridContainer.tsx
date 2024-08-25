@@ -2,20 +2,19 @@ import React from "react";
 
 type GridItem = {
   name: string;
-  description: string;
+  description?: string;
   author: string;
-  price: string;
+  price?: string;
+  imageUpload?: string;
 };
 
 interface GridContainerProps {
   gridData: GridItem[];
-  logo: string;
   buttonText: string;
 }
 
 const GridContainer: React.FC<GridContainerProps> = ({
   gridData,
-  logo,
   buttonText,
 }) => {
   return (
@@ -23,16 +22,27 @@ const GridContainer: React.FC<GridContainerProps> = ({
       {gridData.map((item, index) => (
         <div
           key={index}
-          className="border p-4 rounded-lg shadow-lg flex flex-col items-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full transition-transform transform hover:scale-105"
+          className="bg-gradient-to-r from-green-200 to-green-600 border p-4 rounded-lg shadow-lg flex flex-col items-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full transition-transform transform hover:scale-105"
+          style={{ height: "100%" }} // Ensures the card takes full height
         >
-          <img src={logo} alt="Logo" className="w-16 h-16 mb-4" />
+          <img
+            src={item.imageUpload ? item.imageUpload : "defaultImageUrl"} // Use a default image if imageUpload is undefined
+            alt={item.name}
+            className="w-16 h-16 mb-4"
+          />
           <h2 className="text-sm font-bold mb-2">{item.name.toLowerCase()}</h2>
-          <p className="text-xs mb-2">{item.description}</p>
-          <p className="text-sm text-gray-500 mb-2">{item.author}</p>
-          <p className="text-lg font-semibold mb-2">{item.price}</p>
-          <button className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700">
-            {buttonText}
-          </button>
+          <p className="text-xs mb-2">
+            {item.description || "No description available"}
+          </p>
+          <pre className="text-sm text-gray-500 mb-2">By Admin</pre>
+          <p className="text-lg font-semibold mb-4">{item.price || "Free"}</p>
+          <div className="mt-auto">
+            {" "}
+            {/* Pushes the button to the bottom */}
+            <button className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700">
+              {buttonText}
+            </button>
+          </div>
         </div>
       ))}
     </div>
