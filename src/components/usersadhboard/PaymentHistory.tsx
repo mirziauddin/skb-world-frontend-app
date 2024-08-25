@@ -14,8 +14,6 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { useMediaQuery } from "@mui/material";
-import isBetween from "dayjs/plugin/isBetween";
 import dayjs from "dayjs"; // For date formatting and comparison
 
 interface Payment {

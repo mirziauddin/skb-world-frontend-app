@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import GridContainer from "./GridContainer";
-import homeLogo from "../../assets/homelogo.svg";
 import Pagination from "./Pagination";
 import { usePaginationStore } from "../../middleware/header/usePaginationStore";
 import { BASE_URL } from "../../utils";

@@ -1,32 +1,31 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import {
   BsFillBellFill,
   BsFillEnvelopeFill,
   BsPersonCircle,
   BsJustify,
 } from "react-icons/bs";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 
-function AdminNavbar({
-  OpenSidebar,
-}: {
+interface AdminNavbarProps {
   OpenSidebar: () => void;
   userId: string;
-}) {
+}
+
+function AdminNavbar({ OpenSidebar, userId }: AdminNavbarProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, isUserLoading } = useAuth();
 
   const toggleProfileDropdown = () => {
     setIsProfileOpen((prev) => !prev);
   };
 
-  const { user, isUserLoading } = useAuth();
-  console.log(isUserLoading);
-  console.log(user?.id);
-
   const handleViewProfile = () => {
-    navigate(`/admin/profile/${user?.id}`); // Navigate with the user ID in the URL
+    if (user?.id) {
+      navigate(`/admin/profile/${user.id}`); // Navigate with the user ID in the URL
+    }
     setIsProfileOpen(false); // Close the dropdown after navigating
   };
 
@@ -53,8 +52,10 @@ function AdminNavbar({
               </pre>
             </div>
           )}
-          DashBoard of {!user ? <>Loading...</> : <> {user?.name}</>}
         </div>
+      </div>
+      <div className="ml-4">
+        {isUserLoading ? <>Loading...</> : <span>{userId}</span>}
       </div>
     </header>
   );

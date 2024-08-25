@@ -126,7 +126,7 @@ export default function AdminAllUsers() {
           openSidebarToggle ? "ml-64" : "ml-0"
         }`}
       >
-        <AdminNavbar OpenSidebar={OpenSidebar} />
+        <AdminNavbar OpenSidebar={OpenSidebar} userId="userId" />
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">User List</h1>
           <div className="flex justify-between mb-4 items-center">

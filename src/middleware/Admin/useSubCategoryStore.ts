@@ -75,13 +75,7 @@ const useSubCategoryStore = create<SubCategoryState>((set) => ({
     }
   },
 
-  addSubCategory: async (
-    categoryId: string,
-    subCategoryData: Omit<
-      SubCategory,
-      "id" | "createdAt" | "updatedAt" | "categoryId"
-    >
-  ) => {
+  addSubCategory: async () => {
     const accessToken = getFromLocalStorage("ACCESS_TOKEN");
     if (!accessToken) {
       console.error("No access token found");
@@ -99,15 +93,12 @@ const useSubCategoryStore = create<SubCategoryState>((set) => ({
       //     },
       //   }
       // );
-      set((state) => ({
-        // subCategories: [...state.subCategories, response.data],
-      }));
+      // set((state) => ({
+      // subCategories: [...state.subCategories, response.data],
+      // }));
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.error(
-          "Failed to add subcategory",
-          error.response?.data || error.message
-        );
+        console.error(error.response?.data || error.message);
       } else {
         console.error("Unexpected error", error);
       }

@@ -14,9 +14,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { useMediaQuery } from "@mui/material";
-import isBetween from "dayjs/plugin/isBetween";
-import dayjs from "dayjs"; // For date formatting and comparison
+import dayjs from "dayjs";
 import AdminSideBar from "./AdminSideBar";
 import AdminNavbar from "./AdminNavbar";
 import useAuth from "../../hooks/useAuth";
@@ -38,10 +36,11 @@ const PaymentHistory: React.FC = () => {
   const [filteredPayments, setFilteredPayments] = useState<Payment[]>([]);
   const [showPending, setShowPending] = useState<boolean>(true);
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
-  //   const isMobile = useMediaQuery("(max-width: 768px)");
   const { user, isUserLoading } = useAuth();
-  const userId = user?.id ?? ""; // Provide a fallback value
+  const userId = user?.id ?? "";
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+
+  console.log(isUserLoading);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
@@ -50,9 +49,6 @@ const PaymentHistory: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Mock API call to fetch payment history
-        // const data = await fetchPaymentHistory();
-        // For demonstration, using a static data array
         const data: Payment[] = [
           {
             transactionId: "12345",
@@ -114,7 +110,6 @@ const PaymentHistory: React.FC = () => {
   }, [startDate, endDate, payments, showPending, showCompleted]);
 
   const handleFilterChange = () => {
-    // Trigger re-filtering when dates or status filters change
     if (startDate && endDate) {
       setFilteredPayments(
         payments.filter((payment) => {
