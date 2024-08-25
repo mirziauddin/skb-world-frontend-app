@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { useRef } from "react";
+import { Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/header/NavBar";
 import About from "./components/header/About";
@@ -24,6 +24,7 @@ import AdminProfilePage from "./components/admindashboard/AdminProfilePage";
 import PaymentHistory from "./components/admindashboard/PaymentHistory";
 import AdminAllCourses from "./components/admindashboard/AdminAllCourses";
 import PublicPremiumPurchase from "./components/public/PublicPremiumPurchase";
+import UserProfilePage from "./components/usersadhboard/UserProfilePage";
 // import Protectedroute from "./layout/protected";
 
 export default function App() {
@@ -83,6 +84,7 @@ export default function App() {
         {/* </Route> */}
         //User panel
         <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/user/profile/:userId" element={<UserProfilePage />} />
         {/* public file  */}
         <Route path="/publicAllCourses" element={<PublicAllCourses />} />
         <Route

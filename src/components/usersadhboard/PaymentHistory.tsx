@@ -17,9 +17,6 @@ import {
 import { useMediaQuery } from "@mui/material";
 import isBetween from "dayjs/plugin/isBetween";
 import dayjs from "dayjs"; // For date formatting and comparison
-import AdminSideBar from "./AdminSideBar";
-import AdminNavbar from "./AdminNavbar";
-import useAuth from "../../hooks/useAuth";
 
 interface Payment {
   transactionId: string;
@@ -39,13 +36,6 @@ const PaymentHistory: React.FC = () => {
   const [showPending, setShowPending] = useState<boolean>(true);
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
   //   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { user, isUserLoading } = useAuth();
-  const userId = user?.id ?? ""; // Provide a fallback value
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,106 +142,93 @@ const PaymentHistory: React.FC = () => {
     );
 
   return (
-    <div className="flex">
-      <AdminSideBar
-        openSidebarToggle={openSidebarToggle}
-        OpenSidebar={OpenSidebar}
-      />
-      <div
-        className={`flex-1 transition-all duration-300 ${
-          openSidebarToggle ? "ml-64" : "ml-0"
-        }`}
-      >
-        <AdminNavbar OpenSidebar={OpenSidebar} userId={userId} />
-        <div className="p-4">
-          <Typography variant="h6" className="mb-4">
-            Payment History
-          </Typography>
-          <div className="mb-4 flex flex-col sm:flex-row gap-4">
-            <TextField
-              type="date"
-              label="Start Date"
-              InputLabelProps={{ shrink: true }}
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full sm:w-1/3"
-            />
-            <TextField
-              type="date"
-              label="End Date"
-              InputLabelProps={{ shrink: true }}
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full sm:w-1/3"
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleFilterChange}
-            >
-              Apply Filter
-            </Button>
-          </div>
-          <div className="mb-4 flex gap-4">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={showPending}
-                  onChange={(e) => setShowPending(e.target.checked)}
-                />
-              }
-              label="Show Pending"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={showCompleted}
-                  onChange={(e) => setShowCompleted(e.target.checked)}
-                />
-              }
-              label="Show Completed"
-            />
-          </div>
-          <TableContainer component={Paper}>
-            <Table className="w-full" aria-label="payment history table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Transaction ID</TableCell>
-                  <TableCell>User Name</TableCell>
-                  <TableCell>User ID</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Transaction Status</TableCell>
-                  <TableCell>Money</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredPayments.map((payment) => (
-                  <TableRow key={payment.transactionId}>
-                    <TableCell className="text-sm md:text-base">
-                      {payment.transactionId}
-                    </TableCell>
-                    <TableCell className="text-sm md:text-base">
-                      {payment.userName}
-                    </TableCell>
-                    <TableCell className="text-sm md:text-base">
-                      {payment.userId}
-                    </TableCell>
-                    <TableCell className="text-sm md:text-base">
-                      {payment.date}
-                    </TableCell>
-                    <TableCell className="text-sm md:text-base">
-                      {payment.transactionStatus}
-                    </TableCell>
-                    <TableCell className="text-sm md:text-base">
-                      {payment.money.toFixed(2)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+    <div className="p-4">
+      <Typography variant="h6" className="mb-4">
+        Payment History
+      </Typography>
+      <div className="mb-4 flex flex-col sm:flex-row gap-4">
+        <TextField
+          type="date"
+          label="Start Date"
+          InputLabelProps={{ shrink: true }}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          className="w-full sm:w-1/3"
+        />
+        <TextField
+          type="date"
+          label="End Date"
+          InputLabelProps={{ shrink: true }}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          className="w-full sm:w-1/3"
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleFilterChange}
+        >
+          Apply Filter
+        </Button>
       </div>
+      <div className="mb-4 flex gap-4">
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showPending}
+              onChange={(e) => setShowPending(e.target.checked)}
+            />
+          }
+          label="Show Pending"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showCompleted}
+              onChange={(e) => setShowCompleted(e.target.checked)}
+            />
+          }
+          label="Show Completed"
+        />
+      </div>
+      <TableContainer component={Paper}>
+        <Table className="w-full" aria-label="payment history table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Transaction ID</TableCell>
+              <TableCell>User Name</TableCell>
+              <TableCell>User ID</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Transaction Status</TableCell>
+              <TableCell>Money</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredPayments.map((payment) => (
+              <TableRow key={payment.transactionId}>
+                <TableCell className="text-sm md:text-base">
+                  {payment.transactionId}
+                </TableCell>
+                <TableCell className="text-sm md:text-base">
+                  {payment.userName}
+                </TableCell>
+                <TableCell className="text-sm md:text-base">
+                  {payment.userId}
+                </TableCell>
+                <TableCell className="text-sm md:text-base">
+                  {payment.date}
+                </TableCell>
+                <TableCell className="text-sm md:text-base">
+                  {payment.transactionStatus}
+                </TableCell>
+                <TableCell className="text-sm md:text-base">
+                  {payment.money.toFixed(2)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

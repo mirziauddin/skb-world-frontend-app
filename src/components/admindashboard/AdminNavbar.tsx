@@ -10,7 +10,6 @@ import useAuth from "../../hooks/useAuth";
 
 function AdminNavbar({
   OpenSidebar,
-  userId,
 }: {
   OpenSidebar: () => void;
   userId: string;

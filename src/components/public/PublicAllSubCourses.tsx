@@ -39,6 +39,7 @@ export default function PublicAllSubCourses() {
     }
   }, [categoryId]);
 
+  // const handleCategoryClick = (id: string) => {
   const handleCategoryClick = (id: string) => {
     navigate(`/admin/courses/`);
     // navigate(`/subcategory/courses/${id}`);
