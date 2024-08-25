@@ -34,7 +34,7 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
   const { user, logout } = useAuth();
 
   const handleViewProfile = () => {
-    navigate(`/admin/profile/${user?.id}`);
+    navigate(`/admin/profile/${user?.id}`, { replace: true });
     setIsSettingsOpen(false);
   };
 

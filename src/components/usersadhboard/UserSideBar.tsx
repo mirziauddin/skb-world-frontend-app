@@ -17,17 +17,20 @@ type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 interface MenuItem {
   name: string;
   icon: IconType;
-  href?: string;
+  path?: string;
   onClick?: () => void;
   dropdown?: MenuItem[];
 }
 
-interface AdminSideBarProps {
+interface UserSideBarProps {
   openSidebarToggle: boolean;
   OpenSidebar: () => void;
 }
 
-function UserSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
+const UserSideBar: React.FC<UserSideBarProps> = ({
+  openSidebarToggle,
+  OpenSidebar,
+}) => {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -38,31 +41,30 @@ function UserSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
   };
 
   const handleLogout = () => {
-    logout(); // Ensure logout functionality is called
+    logout();
     navigate("/login");
   };
 
   const menuItems: MenuItem[] = [
-    { name: "Dashboard", icon: BsGrid1X2Fill, href: "adminDashboard" },
+    { name: "Dashboard", icon: BsGrid1X2Fill, path: "/userDashboard" },
     {
       name: "Purchase Courses",
       icon: BsFillArchiveFill,
-      href: "#",
+      path: "/user/purchase/course",
     },
     {
       name: "Transactions & History",
       icon: BsClockHistory,
-      href: "#",
+      path: "/user/payment/history",
     },
     {
       name: "MemberShip",
       icon: BsFillGrid3X3GapFill,
-      href: "adminSubCategory",
+      path: "/user/membership",
     },
     {
       name: "Settings",
       icon: BsFillGearFill,
-      href: "#",
       dropdown: [
         { name: "Profile", icon: BsPersonDashFill, onClick: handleViewProfile },
         { name: "Logout", icon: FiLogOut, onClick: handleLogout },
@@ -96,30 +98,27 @@ function UserSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
             onMouseEnter={() => item.dropdown && setSettingsOpen(true)}
             onMouseLeave={() => item.dropdown && setSettingsOpen(false)}
           >
-            <a
-              href={item.href || "#"}
-              className="flex items-center text-gray-400 hover:text-white"
-              onClick={(e) => {
-                e.preventDefault();
+            <div
+              className="flex items-center text-gray-400 hover:text-white cursor-pointer"
+              onClick={() => {
+                if (item.path) navigate(item.path);
                 if (item.onClick) item.onClick();
               }}
             >
               <item.icon className="mr-2 text-xl" /> {item.name}
-            </a>
+            </div>
             {item.dropdown && settingsOpen && (
               <ul className="ml-8 mt-2 space-y-2">
                 {item.dropdown.map((subItem, subIndex) => (
                   <li key={subIndex}>
-                    <a
-                      href="#"
-                      className="flex items-center text-gray-400 hover:text-white"
-                      onClick={(e) => {
-                        e.preventDefault();
+                    <div
+                      className="flex items-center text-gray-400 hover:text-white cursor-pointer"
+                      onClick={() => {
                         if (subItem.onClick) subItem.onClick();
                       }}
                     >
                       <subItem.icon className="mr-2 text-xl" /> {subItem.name}
-                    </a>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -129,6 +128,6 @@ function UserSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
       </ul>
     </aside>
   );
-}
+};
 
 export default UserSideBar;

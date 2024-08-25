@@ -25,6 +25,10 @@ import PaymentHistory from "./components/admindashboard/PaymentHistory";
 import AdminAllCourses from "./components/admindashboard/AdminAllCourses";
 import PublicPremiumPurchase from "./components/public/PublicPremiumPurchase";
 import UserProfilePage from "./components/usersadhboard/UserProfilePage";
+import Reports from "./components/admindashboard/reports";
+import UserPaymentHistory from "./components/usersadhboard/UserPaymentHistory";
+import PurchaseCourse from "./components/usersadhboard/purchaseCourse";
+import MemberShip from "./components/usersadhboard/MemberShip";
 // import Protectedroute from "./layout/protected";
 
 export default function App() {
@@ -81,10 +85,14 @@ export default function App() {
         <Route path="/admin/profile/:userId" element={<AdminProfilePage />} />
         <Route path="/payment/history/" element={<PaymentHistory />} />
         <Route path="/admin/courses" element={<AdminAllCourses />} />
+        <Route path="/admin/reports" element={<Reports />} />
         {/* </Route> */}
-        //User panel
+        {/* //User panel */}
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/user/profile/:userId" element={<UserProfilePage />} />
+        <Route path="/user/payment/history" element={<UserPaymentHistory />} />
+        <Route path="/user/purchase/course" element={<PurchaseCourse />} />
+        <Route path="/user/membership" element={<MemberShip />} />
         {/* public file  */}
         <Route path="/publicAllCourses" element={<PublicAllCourses />} />
         <Route

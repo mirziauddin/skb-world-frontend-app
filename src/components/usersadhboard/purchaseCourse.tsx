@@ -1,13 +1,12 @@
 import { useState } from "react";
-import UserSideBar from "../components/usersadhboard/UserSideBar";
-import UserNavbar from "../components/usersadhboard/UserNavbar";
-import UserHome from "../components/usersadhboard/UserHome";
-import useAuth from "../hooks/useAuth";
+import UserSideBar from "./UserSideBar";
+import UserNavbar from "./UserNavbar";
+import useAuth from "../../hooks/useAuth";
+
 type Props = {};
 
-export default function UserDashboard({}: Props) {
+export default function PurchaseCourse({}: Props) {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-
   const { user, isUserLoading } = useAuth();
   const userId = user?.id ?? ""; // Provide a fallback value
   console.log(isUserLoading);
@@ -28,7 +27,7 @@ export default function UserDashboard({}: Props) {
         }`}
       >
         <UserNavbar OpenSidebar={OpenSidebar} userId={userId} />
-        <UserHome />
+        <pre>Coming Soon....</pre>
       </div>
     </div>
   );
