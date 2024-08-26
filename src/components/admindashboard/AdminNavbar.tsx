@@ -12,11 +12,11 @@ interface AdminNavbarProps {
   OpenSidebar: () => void;
   userId: string;
 }
-
 function AdminNavbar({ OpenSidebar, userId }: AdminNavbarProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
   const { user, isUserLoading } = useAuth();
+  console.log(isUserLoading);
 
   const toggleProfileDropdown = () => {
     setIsProfileOpen((prev) => !prev);
@@ -34,7 +34,7 @@ function AdminNavbar({ OpenSidebar, userId }: AdminNavbarProps) {
       <div className="cursor-pointer">
         <BsJustify className="text-2xl" onClick={OpenSidebar} />
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-end space-x-4 ml-auto">
         <BsFillBellFill className="text-2xl cursor-pointer" />
         <BsFillEnvelopeFill className="text-2xl cursor-pointer" />
         <div className="relative">
@@ -54,8 +54,9 @@ function AdminNavbar({ OpenSidebar, userId }: AdminNavbarProps) {
           )}
         </div>
       </div>
+
       <div className="ml-4">
-        {isUserLoading ? <>Loading...</> : <span>{userId}</span>}
+        <span>{userId}</span>
       </div>
     </header>
   );

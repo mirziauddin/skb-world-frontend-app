@@ -9,19 +9,19 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import SearchIcon from "@mui/icons-material/Search";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import useCategoryStore from "../../middleware/Admin/CategoryState";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import UpdateCategoryForm from "./categoryCRUD/UpdateCategoryForm";
+import CategoryForm from "./categoryCRUD/CategoryForm";
+import Swal from "sweetalert2";
+import { Typography } from "@mui/material";
 
-// Define the Category type with all required properties
 type Category = {
   id: string;
   name: string;
@@ -33,7 +33,7 @@ type Category = {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "green", // Change the background color to green
+    backgroundColor: "green",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -58,31 +58,17 @@ const AdminCategory = () => {
     null
   );
 
-  // Media query to detect screen width for small screens
   const isSmallScreen = useMediaQuery("(max-width: 650px)");
-
-  // Initialize newCategory with all required properties
-  const [newCategory, setNewCategory] = useState<Category>({
-    id: "", // Placeholder; will be set by the backend
-    name: "",
-    description: "",
-    imageUpload: "",
-    createdAt: new Date().toISOString().split("T")[0],
-    updatedAt: new Date().toISOString().split("T")[0],
-  });
-
   const {
     searchQuery,
     setSearchQuery,
     categories,
     fetchCategories,
-    addCategory,
-    editCategory,
     deleteCategory,
   } = useCategoryStore();
 
   useEffect(() => {
-    fetchCategories(); // Fetch categories when the component mounts
+    fetchCategories();
   }, [fetchCategories]);
 
   const OpenSidebar = () => {
@@ -91,51 +77,6 @@ const AdminCategory = () => {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
-  };
-
-  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setNewCategory((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setNewCategory((prev) => ({
-          ...prev,
-          imageUpload: e.target?.result as string,
-        }));
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  };
-
-  const handleFormSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (newCategory.id) {
-      // Call editCategory with both id and category data
-      editCategory(newCategory.id, {
-        name: newCategory.name,
-        description: newCategory.description,
-        imageUpload: newCategory.imageUpload,
-      });
-    } else {
-      addCategory({
-        name: newCategory.name,
-        description: newCategory.description,
-        imageUpload: newCategory.imageUpload,
-      });
-    }
-    setFormVisible(false);
-    setNewCategory({
-      id: "",
-      name: "",
-      description: "",
-      imageUpload: "",
-      createdAt: new Date().toISOString().split("T")[0],
-      updatedAt: new Date().toISOString().split("T")[0],
-    });
   };
 
   const handleEdit = (id: string) => {
@@ -147,191 +88,180 @@ const AdminCategory = () => {
   };
 
   const handleDelete = (id: string) => {
-    deleteCategory(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCategory(id);
+        Swal.fire("Deleted!", "Your category has been deleted.", "success");
+      }
+    });
   };
 
+  const toggleFormVisibility = () => {
+    setFormVisible((prevVisible) => !prevVisible);
+  };
+
+  // Function to re-fetch categories after an update
   const handleUpdateCategory = () => {
-    setUpdateFormVisible(false);
-    fetchCategories(); // Refresh categories list
+    fetchCategories(); // Refresh categories to reflect the updated data
+    setUpdateFormVisible(false); // Close the update form
   };
 
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <AdminSideBar
-          openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}
-        />
-        <div
-          className={`flex-1 transition-all duration-300 ${
-            openSidebarToggle ? "ml-64" : "ml-0"
-          }`}
-        >
-          <AdminNavbar OpenSidebar={OpenSidebar} userId={""} />
-          <div className="p-4">
-            <div className="flex justify-between items-center mb-4">
-              <TextField
-                label="Search Categories"
-                variant="outlined"
-                size="small"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                InputProps={{
-                  endAdornment: <SearchIcon />,
-                }}
-              />
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => setFormVisible(true)}
-              >
-                Add Category
-              </Button>
+    <div className="flex flex-col min-h-screen">
+      {/* Sidebar and Navbar */}
+      <AdminSideBar
+        openSidebarToggle={openSidebarToggle}
+        OpenSidebar={OpenSidebar}
+      />
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          openSidebarToggle ? "ml-64" : "ml-0"
+        }`}
+      >
+        <AdminNavbar OpenSidebar={OpenSidebar} userId={""} />
+        <div className="p-4">
+          {/* Search and Add Button */}
+          <div className="flex justify-between items-center mb-4">
+            <TextField
+              label="Search Categories"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              InputProps={{
+                endAdornment: <SearchIcon />,
+              }}
+            />
+            <Button
+              variant="contained"
+              color="success"
+              onClick={toggleFormVisibility}
+            >
+              {formVisible ? "Close Form" : "Add Category"}
+            </Button>
+          </div>
+
+          {/* Form and Update Form */}
+          {formVisible && (
+            <CategoryForm onClose={() => setFormVisible(false)} />
+          )}
+
+          {updateFormVisible && selectedCategory && (
+            <UpdateCategoryForm
+              categoryId={selectedCategory.id}
+              initialName={selectedCategory.name}
+              initialDescription={selectedCategory.description || ""}
+              initialImageUpload={selectedCategory.imageUpload || ""}
+              onUpdateCategory={handleUpdateCategory} // Pass the handler
+              onClose={() => setUpdateFormVisible(false)}
+            />
+          )}
+
+          {/* Table or Card View for Categories */}
+          {isSmallScreen ? (
+            <div className="grid grid-cols-1 gap-4">
+              {categories
+                .filter((cat) =>
+                  cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((category) => (
+                  <div
+                    key={category.id}
+                    className="p-4 border rounded shadow-md bg-white"
+                  >
+                    <img
+                      src={category.imageUpload || "/placeholder-image.png"}
+                      alt={category.name}
+                      className="w-full h-32 object-cover mb-2"
+                    />
+                    <Typography variant="h6">{category.name}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {category.description}
+                    </Typography>
+                    <div className="flex justify-between mt-2">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleEdit(category.id)}
+                      >
+                        <EditIcon />
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => handleDelete(category.id)}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
             </div>
-            {formVisible && (
-              <form onSubmit={handleFormSubmit} className="mb-4">
-                <TextField
-                  label="Name"
-                  name="name"
-                  value={newCategory.name}
-                  onChange={handleFormChange}
-                  fullWidth
-                  required
-                />
-                <TextField
-                  label="Description"
-                  name="description"
-                  value={newCategory.description || ""}
-                  onChange={handleFormChange}
-                  fullWidth
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                />
-                <Button type="submit" variant="contained" color="primary">
-                  {newCategory.id ? "Update" : "Add"} Category
-                </Button>
-                <Button
-                  type="button"
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => setFormVisible(false)}
-                >
-                  Cancel
-                </Button>
-              </form>
-            )}
-            {updateFormVisible && selectedCategory && (
-              <UpdateCategoryForm
-                categoryId={selectedCategory.id}
-                initialName={selectedCategory.name}
-                initialDescription={selectedCategory.description || ""}
-                initialImageUpload={selectedCategory.imageUpload || ""}
-                onUpdateCategory={handleUpdateCategory}
-                onClose={() => setUpdateFormVisible(false)}
-              />
-            )}
-            {isSmallScreen ? (
-              <div className="grid grid-cols-1 gap-4">
-                {categories
-                  .filter((cat) =>
-                    cat.name.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((category) => (
-                    <Card key={category.id} className="w-full">
-                      {category.imageUpload && (
-                        <img
-                          src={category.imageUpload}
-                          alt={category.name}
-                          className="w-full h-48 object-cover"
-                        />
-                      )}
-                      <CardContent>
-                        <h2 className="text-lg font-bold">{category.name}</h2>
-                        <p>{category.description}</p>
-                        <p className="text-sm text-gray-600">
-                          Created At: {category.createdAt}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Updated At: {category.updatedAt}
-                        </p>
-                        <div className="flex justify-end mt-2">
+          ) : (
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Id</StyledTableCell>
+                    <StyledTableCell>Name</StyledTableCell>
+                    <StyledTableCell>Description</StyledTableCell>
+                    <StyledTableCell>Image</StyledTableCell>
+                    <StyledTableCell>Created At</StyledTableCell>
+                    <StyledTableCell>Updated At</StyledTableCell>
+                    <StyledTableCell>Actions</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {categories
+                    .filter((cat) =>
+                      cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((category) => (
+                      <StyledTableRow key={category.id}>
+                        <StyledTableCell>{category.id}</StyledTableCell>
+                        <StyledTableCell>{category.name}</StyledTableCell>
+                        <StyledTableCell>
+                          {category.description}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {category.imageUpload ? (
+                            <img
+                              src={category.imageUpload}
+                              alt={category.name}
+                              className="h-12 w-12 object-cover"
+                            />
+                          ) : (
+                            "N/A"
+                          )}
+                        </StyledTableCell>
+                        <StyledTableCell>{category.createdAt}</StyledTableCell>
+                        <StyledTableCell>{category.updatedAt}</StyledTableCell>
+                        <StyledTableCell>
                           <IconButton onClick={() => handleEdit(category.id)}>
                             <EditIcon />
                           </IconButton>
                           <IconButton onClick={() => handleDelete(category.id)}>
                             <DeleteIcon />
                           </IconButton>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-              </div>
-            ) : (
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell>Id</StyledTableCell>
-                      <StyledTableCell>Name</StyledTableCell>
-                      <StyledTableCell>Description</StyledTableCell>
-                      <StyledTableCell>Image</StyledTableCell>
-                      <StyledTableCell>Created At</StyledTableCell>
-                      <StyledTableCell>Updated At</StyledTableCell>
-                      <StyledTableCell>Actions</StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {categories
-                      .filter((cat) =>
-                        cat.name
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
-                      )
-                      .map((category) => (
-                        <StyledTableRow key={category.id}>
-                          <StyledTableCell>{category.id}</StyledTableCell>
-                          <StyledTableCell>{category.name}</StyledTableCell>
-                          <StyledTableCell>
-                            {category.description}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {category.imageUpload && (
-                              <img
-                                src={category.imageUpload}
-                                alt={category.name}
-                                style={{ width: "100px" }}
-                              />
-                            )}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {category.createdAt}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {category.updatedAt}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <IconButton onClick={() => handleEdit(category.id)}>
-                              <EditIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => handleDelete(category.id)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </div>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

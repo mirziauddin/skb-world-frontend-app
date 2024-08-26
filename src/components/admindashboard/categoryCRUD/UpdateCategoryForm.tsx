@@ -46,6 +46,7 @@ export default function UpdateCategoryForm({
           },
         }
       );
+      console.log(categoryId);
       onUpdateCategory();
     } catch (error) {
       console.error("Failed to update category:", error);

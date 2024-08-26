@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useCategoryStore from "./zustand/useCategoryStore";
 import { Button } from "@mui/base/Button";
 import { useNavigate } from "react-router-dom";
-import heading from "../../assets/heading.png";
+import heading from "../../assets/headingImage.png";
 
 export default function PublicAllCourses() {
   const { categories, loading, error, fetchCategories } = useCategoryStore();
@@ -25,7 +25,7 @@ export default function PublicAllCourses() {
         <img
           src={heading}
           alt="Company Logo"
-          className="hidden md:block max-w-[900px] max-h-[200px] object-contain"
+          className="w-full h-auto max-w-[900px] max-h-[900px] object-contain"
         />
       </div>
 

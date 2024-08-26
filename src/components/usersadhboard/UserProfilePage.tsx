@@ -55,7 +55,7 @@ function UserProfilePage() {
         }`}
       >
         <UserNavbar OpenSidebar={OpenSidebar} userId={userid} />
-        <div className="min-h-screen bg-green-800 flex items-center justify-center">
+        <div className="min-h-screen bg-green-200 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
             {/* Profile Picture Section */}
             <div className="flex flex-col items-center">

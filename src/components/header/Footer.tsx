@@ -7,12 +7,12 @@ type FooterProps = {
 
 export const Footer: React.FC<FooterProps> = ({ sections }) => {
   return (
-    <footer className="bg-black text-white py-12  w-screen mt-14">
-      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-5 gap-8 text-center md:text-left">
+    <footer className="bg-black text-white py-12 w-full mt-14">
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 text-center md:text-left">
         {sections.map((section, index) => (
-          <div key={index}>
+          <div key={index} className="mb-8 md:mb-0">
             <h2 className="text-lg font-semibold mb-4">{section.title}</h2>
-            <ul>
+            <ul className="list-none">
               {section.links.map((link, linkIndex) => (
                 <li className="mb-2" key={linkIndex}>
                   <a href={link.url} className="hover:underline">
