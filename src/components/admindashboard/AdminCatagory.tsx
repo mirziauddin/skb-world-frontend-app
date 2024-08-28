@@ -21,6 +21,7 @@ import UpdateCategoryForm from "./categoryCRUD/UpdateCategoryForm";
 import CategoryForm from "./categoryCRUD/CategoryForm";
 import Swal from "sweetalert2";
 import { Typography } from "@mui/material";
+import * as XLSX from "xlsx";
 
 type Category = {
   id: string;
@@ -109,6 +110,14 @@ const AdminCategory = () => {
     setFormVisible((prevVisible) => !prevVisible);
   };
 
+  // Function to handle exporting categories to Excel
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(categories);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Categories");
+    XLSX.writeFile(workbook, "categories.xlsx");
+  };
+
   // Function to re-fetch categories after an update
   const handleUpdateCategory = () => {
     fetchCategories(); // Refresh categories to reflect the updated data
@@ -129,7 +138,7 @@ const AdminCategory = () => {
       >
         <AdminNavbar OpenSidebar={OpenSidebar} userId={""} />
         <div className="p-4">
-          {/* Search and Add Button */}
+          {/* Search, Add Button, and Export Button */}
           <div className="flex justify-between items-center mb-4">
             <TextField
               label="Search Categories"
@@ -141,13 +150,22 @@ const AdminCategory = () => {
                 endAdornment: <SearchIcon />,
               }}
             />
-            <Button
-              variant="contained"
-              color="success"
-              onClick={toggleFormVisibility}
-            >
-              {formVisible ? "Close Form" : "Add Category"}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={toggleFormVisibility}
+              >
+                {formVisible ? "Close Form" : "Add Category"}
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={exportToExcel}
+              >
+                Download Excel
+              </Button>
+            </div>
           </div>
 
           {/* Form and Update Form */}

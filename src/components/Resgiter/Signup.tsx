@@ -281,11 +281,12 @@ const Signup: React.FC<SignupProps> = ({
                   {buttonText}
                 </button>
                 <div className="mt-4 text-center">
+                  Already have an account?
                   <Link
                     to="/login"
-                    className="text-sm font-medium text-green-600 hover:text-green-500"
+                    className="text-sm font-medium text-blue-600 hover:text-green-500"
                   >
-                    Already have an account? Log in
+                    Log in
                   </Link>
                 </div>
               </Form>

@@ -28,6 +28,7 @@ import axios from "axios";
 import { BASE_URL } from "../../utils";
 import SubCategoryForm from "./subCatagoryCRUD/SubCategoryForm";
 import LoadingButton from "@mui/lab/LoadingButton";
+import * as XLSX from "xlsx";
 
 type SubCategory = {
   id: string;
@@ -152,6 +153,27 @@ const AdminSubCategory = () => {
       return 0;
     });
 
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      filteredSubCategories.map((subCat) => ({
+        Id: subCat.id,
+        Category:
+          categories.find((cat) => cat.id === subCat.categoryId)?.name ||
+          "No Category",
+        Name: subCat.name,
+        Description: subCat.description || "",
+        Price: subCat.price || "",
+        Image: subCat.imageUpload || "",
+        PDF: subCat.pdfUpload || "",
+        CreatedAt: new Date(subCat.createdAt).toLocaleDateString(),
+        UpdatedAt: new Date(subCat.updatedAt).toLocaleDateString(),
+      }))
+    );
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SubCategories");
+    XLSX.writeFile(wb, "SubCategories.xlsx");
+  };
+
   if (loading)
     return (
       <LoadingButton
@@ -184,6 +206,17 @@ const AdminSubCategory = () => {
             onClick={handleAddClick}
           >
             Add SubCategory
+          </Button>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "blue",
+              color: "white",
+              marginLeft: "10px",
+            }}
+            onClick={exportToExcel}
+          >
+            Export to Excel
           </Button>
           <TextField
             label="Search SubCategories"
@@ -244,92 +277,32 @@ const AdminSubCategory = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredSubCategories.map((subCategory) => {
-                    const categoryName = categories.find(
-                      (category) => category.id === subCategory.categoryId
-                    )?.name;
-
-                    return (
-                      <TableRow key={subCategory.id}>
-                        <TableCell>{subCategory.id}</TableCell>
-                        <TableCell>{categoryName || "No Category"}</TableCell>
-                        <TableCell>{subCategory.name}</TableCell>
-                        <TableCell>{subCategory.description}</TableCell>
-                        <TableCell>{subCategory.price}</TableCell>
-                        <TableCell>
-                          {subCategory.imageUpload && (
-                            <img
-                              src={subCategory.imageUpload}
-                              alt={subCategory.name}
-                              className="w-24 h-24 object-cover"
-                            />
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {subCategory.pdfUpload && (
-                            <a
-                              href={subCategory.pdfUpload}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              View PDF
-                            </a>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {new Date(subCategory.createdAt).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>
-                          {new Date(subCategory.updatedAt).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>
-                          <IconButton
-                            onClick={() => handleEdit(subCategory.id)}
+                  {filteredSubCategories.map((subCategory) => (
+                    <TableRow key={subCategory.id}>
+                      <TableCell>{subCategory.id}</TableCell>
+                      <TableCell>
+                        {categories.find(
+                          (cat) => cat.id === subCategory.categoryId
+                        )?.name || "No Category"}
+                      </TableCell>
+                      <TableCell>{subCategory.name}</TableCell>
+                      <TableCell>{subCategory.description}</TableCell>
+                      <TableCell>{subCategory.price}</TableCell>
+                      <TableCell>
+                        {subCategory.imageUpload ? (
+                          <a
+                            href={subCategory.imageUpload}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleDelete(subCategory.id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-          <div className="block md:hidden">
-            <Grid container spacing={2}>
-              {filteredSubCategories.map((subCategory) => {
-                const categoryName = categories.find(
-                  (category) => category.id === subCategory.categoryId
-                )?.name;
-
-                return (
-                  <Grid item xs={12} key={subCategory.id}>
-                    <Card>
-                      <CardContent>
-                        <Typography variant="h6">{subCategory.name}</Typography>
-                        <Typography variant="body2">
-                          Category: {categoryName || "No Category"}
-                        </Typography>
-                        <Typography variant="body2">
-                          Description: {subCategory.description}
-                        </Typography>
-                        <Typography variant="body2">
-                          Price: {subCategory.price}
-                        </Typography>
-                        {subCategory.imageUpload && (
-                          <img
-                            src={subCategory.imageUpload}
-                            alt={subCategory.name}
-                            className="w-full h-48 object-cover"
-                          />
+                            View Image
+                          </a>
+                        ) : (
+                          "No Image"
                         )}
-                        {subCategory.pdfUpload && (
+                      </TableCell>
+                      <TableCell>
+                        {subCategory.pdfUpload ? (
                           <a
                             href={subCategory.pdfUpload}
                             target="_blank"
@@ -337,37 +310,31 @@ const AdminSubCategory = () => {
                           >
                             View PDF
                           </a>
+                        ) : (
+                          "No PDF"
                         )}
-                        <Typography variant="body2">
-                          Created At:{" "}
-                          {new Date(subCategory.createdAt).toLocaleDateString()}
-                        </Typography>
-                        <Typography variant="body2">
-                          Updated At:{" "}
-                          {new Date(subCategory.updatedAt).toLocaleDateString()}
-                        </Typography>
-                        <div className="flex space-x-2 mt-2">
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleEdit(subCategory.id)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => handleDelete(subCategory.id)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                );
-              })}
-            </Grid>
+                      </TableCell>
+                      <TableCell>
+                        {new Date(subCategory.createdAt).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        {new Date(subCategory.updatedAt).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton onClick={() => handleEdit(subCategory.id)}>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDelete(subCategory.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         </div>
       </div>

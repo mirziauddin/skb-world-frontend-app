@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { FaHistory } from "react-icons/fa";
+
+import { BsPeopleFill, BsChevronDown } from "react-icons/bs";
 import {
-  BsCart3,
-  BsGrid1X2Fill,
-  BsFillArchiveFill,
-  BsFillGrid3X3GapFill,
-  BsPeopleFill,
-  BsListCheck,
-  BsMenuButtonWideFill,
-  BsFillGearFill,
-  BsPersonCircle,
-  BsChevronDown,
-} from "react-icons/bs";
+  FcButtingIn,
+  FcConferenceCall,
+  FcDataSheet,
+  FcHome,
+  FcManager,
+  FcPaid,
+  FcPlus,
+  FcReading,
+  FcReuse,
+  FcRightUp2,
+  FcServices,
+} from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
@@ -29,13 +33,13 @@ interface AdminSideBarProps {
 }
 
 function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   const handleViewProfile = () => {
     navigate(`/admin/profile/${user?.id}`, { replace: true });
-    setIsSettingsOpen(false);
+    setOpenMenu(null);
   };
 
   const handleLogout = () => {
@@ -43,34 +47,28 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
     navigate("/login"); // Redirect the user to the login page
   };
 
-  const handleMouseEnter = () => {
-    setTimeout(() => {
-      setIsSettingsOpen(true);
-    }, 150); // Add a 1.5-second delay before opening the settings dropdown
+  const handleMouseEnter = (menuName: string) => {
+    setOpenMenu(menuName);
   };
 
   const handleMouseLeave = () => {
-    setIsSettingsOpen(false);
-  };
-
-  const handleCategoryClick = () => {
-    navigate("/adminCategory"); // Navigate to the Categories page without reloading
+    setOpenMenu(null);
   };
 
   const menuItems: MenuItem[] = [
     {
       name: "Dashboard",
-      icon: BsGrid1X2Fill,
+      icon: FcDataSheet,
       onClick: () => navigate("/adminDashboard"),
     },
     {
       name: "Categories",
-      icon: BsFillArchiveFill,
-      onClick: handleCategoryClick,
+      icon: FcReuse,
+      onClick: () => navigate("/adminCategory"),
     },
     {
       name: "SubCategories",
-      icon: BsFillGrid3X3GapFill,
+      icon: FcPaid,
       onClick: () => navigate("/adminSubCategory"),
     },
     {
@@ -79,29 +77,51 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
       onClick: () => navigate("/adminAllUsers"),
     },
     {
+      name: "Primium User",
+      icon: FcButtingIn,
+      onClick: () => navigate("/admin/premium/user"),
+    },
+    {
+      name: "Batch",
+      icon: FcReading,
+      onClick: () => {}, // No navigation needed
+      subItems: [
+        {
+          name: "NewBatch",
+          icon: FcPlus,
+          onClick: () => navigate("/admin/batch/add"),
+        },
+        {
+          name: "All Batch",
+          icon: FcConferenceCall,
+          onClick: () => navigate("/admin/batch/all"),
+        },
+      ],
+    },
+    {
       name: "Payment History",
-      icon: BsListCheck,
+      icon: FaHistory,
       onClick: () => navigate("/payment/history/"),
     },
     {
       name: "Reports",
-      icon: BsMenuButtonWideFill,
+      icon: FcButtingIn,
       onClick: () => navigate("/admin/reports"),
     },
     {
       name: "Settings",
-      icon: BsFillGearFill,
+      icon: FcServices,
       onClick: () => {}, // No navigation needed
       subItems: [
         {
           name: "Profile",
-          icon: BsPersonCircle,
+          icon: FcManager,
           onClick: handleViewProfile,
         },
         {
           name: "Logout",
-          icon: BsFillGearFill,
-          onClick: handleLogout, // Trigger the logout function on click
+          icon: FcRightUp2,
+          onClick: handleLogout,
         },
       ],
     },
@@ -115,7 +135,7 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
     >
       <div className="flex justify-between items-center px-8 pt-4 mb-8">
         <div className="text-white text-2xl font-bold flex items-center">
-          <BsCart3 className="mr-2 text-3xl" /> Admin
+          <FcHome className="mr-2 text-3xl" /> Admin
         </div>
         <span
           className="text-red-500 ml-6 mt-2 cursor-pointer"
@@ -130,12 +150,8 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
           <li
             className="px-8"
             key={index}
-            onMouseEnter={
-              item.name === "Settings" ? handleMouseEnter : undefined
-            }
-            onMouseLeave={
-              item.name === "Settings" ? handleMouseLeave : undefined
-            }
+            onMouseEnter={() => item.subItems && handleMouseEnter(item.name)}
+            onMouseLeave={() => item.subItems && handleMouseLeave()}
           >
             <a
               href="#"
@@ -149,15 +165,19 @@ function AdminSideBar({ openSidebarToggle, OpenSidebar }: AdminSideBarProps) {
               {item.subItems && (
                 <BsChevronDown
                   className={`ml-auto transform transition-transform ${
-                    isSettingsOpen && item.name === "Settings"
-                      ? "rotate-180"
-                      : ""
+                    openMenu === item.name ? "rotate-180" : ""
                   }`}
                 />
               )}
             </a>
-            {item.subItems && isSettingsOpen && item.name === "Settings" && (
-              <ul className="pl-8 mt-2 space-y-4">
+            {item.subItems && (
+              <ul
+                className={`pl-8 mt-2 space-y-4 overflow-hidden transition-all duration-300 ease-in-out ${
+                  openMenu === item.name
+                    ? "max-h-[999px] opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
                 {item.subItems.map((subItem, subIndex) => (
                   <li key={subIndex}>
                     <a

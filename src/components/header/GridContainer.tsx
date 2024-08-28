@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 type GridItem = {
   name: string;
@@ -17,6 +18,12 @@ const GridContainer: React.FC<GridContainerProps> = ({
   gridData,
   buttonText,
 }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4">
       {gridData.map((item, index) => (
@@ -39,7 +46,10 @@ const GridContainer: React.FC<GridContainerProps> = ({
           <div className="mt-auto">
             {" "}
             {/* Pushes the button to the bottom */}
-            <button className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700">
+            <button
+              className="bg-green-600 text-white py-2 px-4 text-center text-sm rounded hover:bg-green-700"
+              onClick={handleNavigation}
+            >
               {buttonText}
             </button>
           </div>

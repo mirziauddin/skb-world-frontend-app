@@ -18,6 +18,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import * as XLSX from "xlsx";
 import { BASE_URL } from "../../utils";
 import UpdateUserForm from "./usersCRUD/UpdateUserForm";
 import AddUserForm from "./usersCRUD/AddUserForm";
@@ -69,6 +70,12 @@ export default function AdminAllUsers() {
     } catch (error) {
       console.error("Failed to fetch users:", error);
     }
+  };
+  const handleDownloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(users);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+    XLSX.writeFile(workbook, "users_list.xlsx");
   };
 
   const handleAddUser = async () => {
@@ -130,7 +137,15 @@ export default function AdminAllUsers() {
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">User List</h1>
           <div className="flex justify-between mb-4 items-center">
-            <h2 className="text-xl">Users</h2>
+            <div className="flex space-x-4">
+              <h2 className="text-xl">Users</h2>
+              <button
+                onClick={handleDownloadExcel}
+                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+              >
+                Download Excel
+              </button>
+            </div>
             <button
               onClick={() => setIsAddUserFormOpen(true)}
               className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"

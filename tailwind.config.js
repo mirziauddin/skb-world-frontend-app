@@ -4,9 +4,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ['"Roboto"', "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
       },
       keyframes: {
+        zoomInOut: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.05)" },
+        },
         bounce: {
           "0%, 100%": { transform: "translateY(-10%)" },
           "50%": { transform: "translateY(10%)" },
@@ -35,6 +39,7 @@ module.exports = {
         },
       },
       animation: {
+        zoomInOut: "zoomInOut 3s ease-in-out infinite",
         bounce: "bounce 4s infinite",
         typing:
           "typing 2s steps(30, end) forwards, blinkCaret 0.75s step-end infinite",
@@ -44,7 +49,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("flowbite-typography")],
   variants: {
     extend: {
       display: ["focus-group"],

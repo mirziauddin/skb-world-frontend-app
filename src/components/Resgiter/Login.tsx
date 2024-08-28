@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { BASE_URL } from "../../utils";
 import useAuth from "../../hooks/useAuth";
+import { FcGoogle } from "react-icons/fc";
 
 interface LoginProps {
   title?: string;
@@ -23,8 +24,8 @@ const Login: React.FC<LoginProps> = ({
   emailPlaceholder = "Enter your email",
   passwordPlaceholder = "Enter your password",
   buttonText = "Login",
-  forgotPasswordText = "Forgot Password?",
-  createAccountText = "Don't have an account?",
+  forgotPasswordText = "Forgot Password",
+  createAccountText = "Don't have an account? ",
 }) => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
@@ -92,13 +93,24 @@ const Login: React.FC<LoginProps> = ({
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="space-y-4">
+            <Form className="space-y-4 ">
               <div>
+                <div className="flex flex-col items-center justify-center ">
+                  <button
+                    type="button"
+                    className="text-white bg-green-700 hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mb-2"
+                  >
+                    <FcGoogle className="mr-3 bg-white  rounded-full h-6 w-6" />
+                    Sign in with Google
+                  </button>
+                  <p className="text-sm mt-4">or</p>
+                </div>
+
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Email
+                  <strong>Email</strong>
                 </label>
                 <Field
                   type="email"
@@ -118,7 +130,7 @@ const Login: React.FC<LoginProps> = ({
                   htmlFor="password"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Password
+                  <strong>Password</strong>
                 </label>
                 <Field
                   type="password"
@@ -150,17 +162,18 @@ const Login: React.FC<LoginProps> = ({
         <div className="mt-4 text-center">
           <Link
             to="/forgot-password"
-            className="text-sm font-medium text-green-600 hover:text-green-500"
+            className="text-sm font-medium text-blue-600 hover:text-green-500"
           >
             {forgotPasswordText}
           </Link>
         </div>
         <div className="mt-4 text-center">
+          {createAccountText}
           <Link
             to="/signup"
-            className="text-sm font-medium text-green-600 hover:text-green-500"
+            className="text-sm font-medium text-blue-600 hover:text-green-500"
           >
-            {createAccountText}
+            Click Here
           </Link>
         </div>
       </div>

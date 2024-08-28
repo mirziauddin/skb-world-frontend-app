@@ -24,31 +24,31 @@ const LandingPage: React.FC<LandingPageProps> = ({
     <div className="scroll-smooth">
       <div
         ref={homeRef}
-        className="flex items-center justify-center w-full min-h-screen p-4"
+        className="flex items-center justify-center w-full min-h-screen px-4 mx-4 border-l-8 border-r-8 border-gray-300" // Added left and right borders
       >
         <Home />
       </div>
       <div
         ref={allCoursesRef}
-        className="flex items-center justify-center w-full min-h-screen p-4"
+        className="flex items-center justify-center w-full min-h-screen px-4 mx-4 border-l-8 border-r-8 border-gray-300" // Added left and right borders
       >
         <AllCourses />
       </div>
       <div
         ref={servicesRef}
-        className="flex items-center justify-center w-full min-h-screen "
+        className="flex items-center justify-center w-full min-h-screen px-4 mx-4 border-l-8 border-r-8 border-gray-300" // Added left and right borders
       >
         <Service />
       </div>
       <div
         ref={aboutRef}
-        className="flex items-center justify-center w-full min-h-screen "
+        className="flex items-center justify-center w-full min-h-screen px-4 mx-4 border-l-8 border-r-8 border-gray-300" // Added left and right borders
       >
         <About />
       </div>
       <div
         ref={contactRef}
-        className="flex items-center justify-center w-full min-h-screen "
+        className="flex items-center justify-center w-full min-h-screen px-4 mx-4 border-l-8 border-r-8 border-gray-300" // Added left and right borders
       >
         <Contact />
       </div>
@@ -57,6 +57,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 };
 
 export default LandingPage;
+
 // import React from "react";
 // import Home from "../components/header/Home";
 // import AllCourses from "../components/header/AllCourses";

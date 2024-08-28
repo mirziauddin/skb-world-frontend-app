@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import {
-  BsFillBellFill,
-  BsFillEnvelopeFill,
-  BsPersonCircle,
-  BsJustify,
-} from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
+import { BsFillBellFill } from "react-icons/bs";
+import { FcDatabase, FcSms } from "react-icons/fc";
 
 interface AdminNavbarProps {
   OpenSidebar: () => void;
@@ -32,13 +29,13 @@ function AdminNavbar({ OpenSidebar, userId }: AdminNavbarProps) {
   return (
     <header className="flex justify-between items-center p-4 bg-green-800 text-white relative">
       <div className="cursor-pointer">
-        <BsJustify className="text-2xl" onClick={OpenSidebar} />
+        <FcDatabase className="text-2xl" onClick={OpenSidebar} />
       </div>
       <div className="flex items-end space-x-4 ml-auto">
         <BsFillBellFill className="text-2xl cursor-pointer" />
-        <BsFillEnvelopeFill className="text-2xl cursor-pointer" />
+        <FcSms className="text-2xl cursor-pointer" />
         <div className="relative">
-          <BsPersonCircle
+          <CgProfile
             className="text-2xl cursor-pointer"
             onClick={toggleProfileDropdown}
           />

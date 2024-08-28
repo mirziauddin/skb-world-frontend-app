@@ -62,10 +62,11 @@ const AllCourses: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white p-4 md:p-6 lg:p-8">
+    <div className="w-full min-h-screen bg-white p-4 md:p-6 lg:p-8 font-roboto">
       <div className="text-center mb-8">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-          Our Recent Courses
+          <span className="text-green-500">Recent</span>{" "}
+          <span className="text-black">Courses</span>
         </h1>
         <p className="text-base md:text-lg lg:text-xl text-gray-600">
           Explore our latest offerings and find the perfect course to enhance

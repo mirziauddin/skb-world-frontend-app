@@ -12,7 +12,7 @@ const Home = () => {
 
   return (
     <>
-      <section className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:p-8 lg:p-12">
+      <section className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-4 p-4 md:p-8 lg:p-12 font-roboto">
         {/* Left Side Content */}
         <div className="flex flex-col justify-center items-center md:items-start text-center md:text-left p-4">
           <div

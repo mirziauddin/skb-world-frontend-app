@@ -30,6 +30,9 @@ import UserPaymentHistory from "./components/usersadhboard/UserPaymentHistory";
 import PurchaseCourse from "./components/usersadhboard/purchaseCourse";
 import MemberShip from "./components/usersadhboard/MemberShip";
 import Reports from "./components/admindashboard/Reports";
+import PremiumUser from "./components/admindashboard/PremiumUser";
+import AddBatch from "./components/admindashboard/AddBatch";
+import AllBatch from "./components/admindashboard/AllBatch";
 // import Protectedroute from "./layout/protected";
 
 export default function App() {
@@ -86,7 +89,10 @@ export default function App() {
         <Route path="/admin/profile/:userId" element={<AdminProfilePage />} />
         <Route path="/payment/history/" element={<PaymentHistory />} />
         <Route path="/admin/courses" element={<AdminAllCourses />} />
+        <Route path="/admin/premium/user" element={<PremiumUser />} />
         <Route path="/admin/reports" element={<Reports />} />
+        <Route path="/admin/batch/add" element={<AddBatch />} />
+        <Route path="/admin/batch/all" element={<AllBatch />} />
         {/* </Route> */}
         {/* //User panel */}
         <Route path="/userDashboard" element={<UserDashboard />} />

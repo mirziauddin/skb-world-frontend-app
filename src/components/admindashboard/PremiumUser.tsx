@@ -13,7 +13,7 @@ type Batch = {
 
 type Props = {};
 
-export default function Reports({}: Props) {
+export default function PremiumUser({}: Props) {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const [filterStatus, setFilterStatus] = useState<"Active" | "Block" | "All">(
     "All"
